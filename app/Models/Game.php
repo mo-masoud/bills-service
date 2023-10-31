@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
@@ -15,7 +16,7 @@ use Orchid\Screen\AsSource;
  */
 class Game extends Model
 {
-    use HasFactory, SoftDeletes, AsSource, Filterable;
+    use HasFactory, SoftDeletes, AsSource, Filterable, Searchable;
 
     protected $fillable = [
         'name',

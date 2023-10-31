@@ -1,5 +1,8 @@
 <?php
 
+use App\Orchid\PlatformProvider;
+use Orchid\Support\BootstrapIconsPath;
+
 return [
 
     /*
@@ -45,7 +48,7 @@ return [
      */
 
     'middleware' => [
-        'public'  => ['web', 'cache.headers:private;must_revalidate;etag'],
+        'public' => ['web', 'cache.headers:private;must_revalidate;etag'],
         'private' => ['web', 'platform', 'cache.headers:private;must_revalidate;etag'],
     ],
 
@@ -127,7 +130,7 @@ return [
 
     'resource' => [
         'stylesheets' => [],
-        'scripts'     => [],
+        'scripts' => [],
     ],
 
     /*
@@ -185,7 +188,7 @@ return [
      */
 
     'attachment' => [
-        'disk'      => env('DASHBOARD_FILESYSTEM_DISK', 'public'),
+        'disk' => env('DASHBOARD_FILESYSTEM_DISK', 'public'),
         'generator' => \Orchid\Attachment\Engines\Generator::class,
     ],
 
@@ -203,7 +206,7 @@ return [
      */
 
     'icons' => [
-        'bs'  => \Orchid\Support\BootstrapIconsPath::getFolder(),
+        'bs' => BootstrapIconsPath::getFolder(),
     ],
 
     /*
@@ -221,7 +224,7 @@ return [
      */
 
     'notifications' => [
-        'enabled'  => true,
+        'enabled' => true,
         'interval' => 60,
     ],
 
@@ -244,7 +247,6 @@ return [
      */
 
     'search' => [
-        // \App\Models\User::class
     ],
 
     /*
@@ -260,7 +262,7 @@ return [
      */
 
     'turbo' => [
-        'cache'   => true,
+        'cache' => true,
     ],
 
     /*
@@ -316,6 +318,6 @@ return [
      |
      */
 
-    'provider' => \App\Orchid\PlatformProvider::class,
+    'provider' => PlatformProvider::class,
 
 ];
