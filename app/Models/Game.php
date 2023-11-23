@@ -24,6 +24,10 @@ class Game extends Model
         'image',
     ];
 
+    protected $hidden = [
+        'deleted_at'
+    ];
+
     public function powerlevel(): HasOne
     {
         return $this->hasOne(PowerLevel::class);
