@@ -15,7 +15,6 @@ class Skill extends Model
     protected $fillable = [
         'game_id',
         'name',
-        'price',
         'section_id'
     ];
 
@@ -32,5 +31,10 @@ class Skill extends Model
     public function bootMethods(): HasMany
     {
         return $this->hasMany(BootMethod::class);
+    }
+
+    public function prices(): HasMany
+    {
+        return $this->hasMany(SkillPrice::class);
     }
 }

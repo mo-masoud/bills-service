@@ -71,8 +71,8 @@ class SkillsScreen extends Screen
             Layout::table('skills', [
                 TD::make('name'),
                 TD::make('price'),
-                TD::make('game')->render(fn($skill) => Link::make($skill->game->name)->route('platform.games.view', $skill->game)),
-                TD::make('section')->render(fn($skill) => $skill->section ? Link::make($skill->section->name)->route('platform.games.edit', $skill->game) : '-'),
+                TD::make('game')->render(fn ($skill) => Link::make($skill->game->name)->route('platform.games.view', $skill->game)),
+                TD::make('section')->render(fn ($skill) => $skill->section ? Link::make($skill->section->name)->route('platform.games.edit', $skill->game) : '-'),
                 TD::make('Actions')
                     ->alignRight()
                     ->cantHide()
@@ -103,13 +103,22 @@ class SkillsScreen extends Screen
                     ->title('Name')
                     ->type('text')
                     ->required(),
-                Input::make('skill.price')
-                    ->title('Price')
-                    ->type('number')
-                    ->min(0)->required(),
                 Relation::make('skill.section_id')
                     ->title('Section')
                     ->fromModel(SkillSection::class, 'name'),
+
+                Matrix::make('skill.prices')->columns(['min_level', 'max_level', 'price'])->fields([
+                    'min_level' => Input::make('skill.prices.min_level')
+                        ->type('number')
+                        ->min(0)->required(),
+                    'max_level' => Input::make('skill.prices.max_level')
+                        ->type('number')
+                        ->min(0)->required(),
+                    'price' => Input::make('skill.prices.price')
+                        ->type('number')
+                        ->min(0)->required(),
+                ])->title('Skill Prices'),
+
                 Matrix::make('skill.boot_methods')->columns(['name', 'price'])->fields([
                     'name' => Input::make('skill.boot_methods.name')
                         ->type('text')
@@ -131,13 +140,22 @@ class SkillsScreen extends Screen
                     ->title('Name')
                     ->type('text')
                     ->required(),
-                Input::make('skill.price')
-                    ->title('Price')
-                    ->type('number')
-                    ->min(0)->required(),
                 Relation::make('skill.section_id')
                     ->title('Section')
                     ->fromModel(SkillSection::class, 'name'),
+                Matrix::make('skill.prices')->columns(['min_level', 'max_level', 'price'])->fields([
+                    'min_level' => Input::make('skill.prices.min_level')
+                        ->type('number')
+                        ->min(0)->required(),
+                    'max_level' => Input::make('skill.prices.max_level')
+                        ->type('number')
+                        ->min(0)->required(),
+                    'price' => Input::make('skill.prices.price')
+                        ->type('number')
+                        ->step(0.1)
+                        ->min(0)->required(),
+                ])->title('Skill Prices'),
+
                 Matrix::make('skill.bootMethods')->columns(['name', 'price'])->fields([
                     'name' => Input::make('skill.bootMethods.name')
                         ->type('text')
@@ -164,8 +182,11 @@ class SkillsScreen extends Screen
         $data = $request->validate([
             'skill.game_id' => 'required|numeric|exists:games,id',
             'skill.name' => 'required|string|max:191',
-            'skill.price' => 'required|numeric|min:0',
             'skill.section_id' => 'nullable|numeric|exists:skill_sections,id',
+            'skill.prices' => 'nullable|array',
+            'skill.prices.*.min_level' => 'required|numeric|min:0',
+            'skill.prices.*.max_level' => 'required|numeric|min:0',
+            'skill.prices.*.price' => 'required|numeric|min:0',
             'skill.bootMethods' => 'nullable|array',
             'skill.bootMethods.*.name' => 'required|string',
             'skill.bootMethods.*.price' => 'required|numeric|min:0',
@@ -175,6 +196,19 @@ class SkillsScreen extends Screen
         $skill = Skill::where('id', $request->id)->first();
 
         $skill->update($data['skill']);
+
+        $skill->prices()->delete();
+
+        foreach ($data['skill']['prices'] as $price) {
+            $skill->prices()->updateOrCreate([
+                'min_level' => $price['min_level'],
+                'max_level' => $price['max_level'],
+            ], [
+                'min_level' => $price['min_level'],
+                'max_level' => $price['max_level'],
+                'price' => $price['price'],
+            ]);
+        }
 
         $bootMethods = [];
         foreach ($data['skill']['bootMethods'] as $bootMethod) {
@@ -202,8 +236,11 @@ class SkillsScreen extends Screen
         $data = $request->validate([
             'skill.game_id' => 'required|numeric|exists:games,id',
             'skill.name' => 'required|string|max:191',
-            'skill.price' => 'required|numeric|min:0',
             'skill.section_id' => 'nullable|numeric|exists:skill_sections,id',
+            'skill.prices' => 'nullable|array',
+            'skill.prices.*.min_level' => 'required|numeric|min:0',
+            'skill.prices.*.max_level' => 'required|numeric|min:0',
+            'skill.prices.*.price' => 'required|numeric|min:0',
             'skill.boot_methods' => 'nullable|array',
             'skill.boot_methods.*.name' => 'required|string',
             'skill.boot_methods.*.price' => 'required|numeric|min:0',
@@ -211,6 +248,14 @@ class SkillsScreen extends Screen
 
 
         $skill = Skill::create($data['skill']);
+
+        foreach ($data['skill']['prices'] as $price) {
+            $skill->prices()->create([
+                'min_level' => $price['min_level'],
+                'max_level' => $price['max_level'],
+                'price' => $price['price'],
+            ]);
+        }
 
         foreach ($data['skill']['boot_methods'] as $bootMethod) {
             $skill->bootMethods()->create([
