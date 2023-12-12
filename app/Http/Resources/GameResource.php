@@ -22,12 +22,12 @@ class GameResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'image' => $this->image,
-            'powerlevel' => [
+            'powerlevel' => $this->powerlevel ? [
                 'image' => $this->powerlevel->image,
                 'description' => $this->powerlevel->description,
                 'levels' => $this->powerlevel->levels,
                 'price' => $this->powerlevel->price,
-            ],
+            ] : null,
             'skills' => $this->skills()
         ];
     }
