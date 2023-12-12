@@ -207,6 +207,7 @@ return [
 
     'icons' => [
         'bs' => BootstrapIconsPath::getFolder(),
+        'orc' => \Orchid\IconPack\Path::getFolder(),
     ],
 
     /*
@@ -246,8 +247,7 @@ return [
      |
      */
 
-    'search' => [
-    ],
+    'search' => [],
 
     /*
      |--------------------------------------------------------------------------

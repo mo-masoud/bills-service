@@ -33,6 +33,12 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
+            Menu::make(__('Home'))
+                ->icon('orc.home')
+                ->route('platform.home')
+                ->permission('platform.home')
+                ->divider(),
+
             Menu::make(__('Games'))
                 ->icon('bs.controller')
                 ->route('platform.games')
@@ -44,7 +50,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.skills')
                 ->permission('platform.skills')
                 ->divider(),
-            
+
             Menu::make(__('Users'))
                 ->icon('bs.people')
                 ->route('platform.systems.users')
@@ -69,7 +75,8 @@ class PlatformProvider extends OrchidServiceProvider
         return [
             ItemPermission::group(__('System'))
                 ->addPermission('platform.systems.roles', __('Roles'))
-                ->addPermission('platform.systems.users', __('Users')),
+                ->addPermission('platform.systems.users', __('Users'))
+                ->addPermission('platform.home', __('Home')),
 
             ItemPermission::group(__('Games'))
                 ->addPermission('platform.games', __('Games'))

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +26,9 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [ProfileController::class, 'profile']);
-
-    Route::get('games', [GamesController::class, 'index']);
-    Route::get('games/{game}', [GamesController::class, 'show']);
-    Route::get('games/{game}/details', [GamesController::class, 'showDetails']);
 });
+
+Route::get('home', [HomeController::class, 'home']);
+Route::get('games', [GamesController::class, 'index']);
+Route::get('games/{game}', [GamesController::class, 'show']);
+Route::get('games/{game}/details', [GamesController::class, 'showDetails']);
