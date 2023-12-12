@@ -10,7 +10,7 @@ class GamesController extends Controller
 {
     public function index(): JsonResponse
     {
-        $games = Game::select('id', 'name', 'image')->latest()->get();
+        $games = Game::whereHas('powerlevel')->select('id', 'name', 'image')->latest()->get();
         return response()->json($games);
     }
 
