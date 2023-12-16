@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 use Orchid\Filters\Types\Like;
@@ -71,4 +72,9 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }
