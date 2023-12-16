@@ -37,6 +37,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('orc.home')
                 ->route('platform.home')
                 ->permission('platform.home')
+                ->title(__('System'))
                 ->divider(),
 
             Menu::make(__('Games'))
@@ -62,6 +63,13 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.systems.roles')
                 ->permission('platform.systems.roles')
                 ->divider(),
+
+            Menu::make(__('Orders'))
+                ->icon('bs.cart')
+                ->route('platform.orders')
+                ->permission('platform.orders')
+                ->title(__('Orders Management'))
+                ->divider(),
         ];
     }
 
@@ -81,6 +89,9 @@ class PlatformProvider extends OrchidServiceProvider
             ItemPermission::group(__('Games'))
                 ->addPermission('platform.games', __('Games'))
                 ->addPermission('platform.skills', __('Skills')),
+
+            ItemPermission::group(__('Orders'))
+                ->addPermission('platform.orders', __('Orders')),
         ];
     }
 }

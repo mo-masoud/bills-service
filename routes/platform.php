@@ -6,6 +6,7 @@ use App\Orchid\Screens\Game\GameFormScreen;
 use App\Orchid\Screens\Game\GameListScreen;
 use App\Orchid\Screens\Game\GameViewScreen;
 use App\Orchid\Screens\Home\HomeScreen;
+use App\Orchid\Screens\Orders\OrdersScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
@@ -116,3 +117,9 @@ Route::screen('home', HomeScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Home'), route('platform.home')));
+
+Route::screen('orders', OrdersScreen::class)
+    ->name('platform.orders')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Orders'), route('platform.orders')));
