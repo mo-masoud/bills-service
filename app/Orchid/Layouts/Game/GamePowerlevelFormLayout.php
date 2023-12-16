@@ -38,6 +38,7 @@ class GamePowerlevelFormLayout extends Rows
             Input::make('game.powerlevel.price')
                 ->title('Price Per Level')
                 ->type('number')
+                ->step(0.1)
                 ->min(0),
         ];
     }

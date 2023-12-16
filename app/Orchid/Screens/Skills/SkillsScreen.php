@@ -116,6 +116,7 @@ class SkillsScreen extends Screen
                         ->min(0)->required(),
                     'price' => Input::make('skill.prices.price')
                         ->type('number')
+                        ->step(0.1)
                         ->min(0)->required(),
                 ])->title('Skill Prices'),
 
@@ -125,6 +126,7 @@ class SkillsScreen extends Screen
                         ->required(),
                     'price' => Input::make('skill.boot_methods.price')
                         ->type('number')
+                        ->step(0.1)
                         ->min(0)->required(),
                 ])->title('Boot Methods')
             ]))
@@ -162,6 +164,7 @@ class SkillsScreen extends Screen
                         ->required(),
                     'price' => Input::make('skill.bootMethods.price')
                         ->type('number')
+                        ->step(0.1)
                         ->min(0)->required(),
                 ])->title('Boot Methods')
             ]))->async('asyncLoadSkill')
