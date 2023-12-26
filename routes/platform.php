@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\Coupons\CouponsScreen;
 use App\Orchid\Screens\Game\GameFormScreen;
 use App\Orchid\Screens\Game\GameListScreen;
 use App\Orchid\Screens\Game\GameViewScreen;
@@ -123,3 +124,9 @@ Route::screen('orders', OrdersScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Orders'), route('platform.orders')));
+
+Route::screen('coupons', CouponsScreen::class)
+    ->name('platform.coupons')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Coupons'), route('platform.coupons')));

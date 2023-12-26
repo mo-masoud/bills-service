@@ -16,7 +16,7 @@ class OrdersScreen extends Screen
     public function query(): iterable
     {
         return [
-            'orders' => Order::with('user')->withCount('powerlevelItems')->paginate(),
+            'orders' => Order::with('user')->withCount('powerlevelItems')->latest()->paginate(),
         ];
     }
 

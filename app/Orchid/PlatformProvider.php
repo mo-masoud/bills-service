@@ -68,7 +68,12 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.cart')
                 ->route('platform.orders')
                 ->permission('platform.orders')
-                ->title(__('Orders Management'))
+                ->title(__('Orders Management')),
+
+            Menu::make(__('Coupons'))
+                ->icon('bs.gift')
+                ->route('platform.coupons')
+                ->permission('platform.coupons')
                 ->divider(),
         ];
     }
@@ -91,7 +96,8 @@ class PlatformProvider extends OrchidServiceProvider
                 ->addPermission('platform.skills', __('Skills')),
 
             ItemPermission::group(__('Orders'))
-                ->addPermission('platform.orders', __('Orders')),
+                ->addPermission('platform.orders', __('Orders'))
+                ->addPermission('platform.coupons', __('Coupons')),
         ];
     }
 }

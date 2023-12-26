@@ -36,3 +36,5 @@ Route::get('home', [HomeController::class, 'home']);
 Route::get('games', [GamesController::class, 'index']);
 Route::get('games/{game}', [GamesController::class, 'show']);
 Route::get('games/{game}/details', [GamesController::class, 'showDetails']);
+
+Route::post('validate-coupon-code', [PlaceOrdersController::class, 'validateCouponCode']);

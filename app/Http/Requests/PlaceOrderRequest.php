@@ -15,6 +15,8 @@ class PlaceOrderRequest extends FormRequest
     {
         return [
             'items' => 'required|array|min:1',
+            'coupon' => 'nullable|string',
+            'items.*.type' => 'required|string|in:powerlevel',
             'items.*.game_id' => 'required|numeric|exists:games,id',
             'items.*.skill_id' => 'required|numeric|exists:skills,id',
             'items.*.current_level' => 'required|numeric|min:1',
