@@ -6,6 +6,7 @@ use App\Http\Requests\PlaceOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Coupon;
 use App\Services\PlaceOrderService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
 class PlaceOrdersController extends Controller
@@ -33,7 +34,10 @@ class PlaceOrdersController extends Controller
         ]);
     }
 
-    public function placeOrder(PlaceOrderRequest $request)
+    /**
+     * @throws ValidationException
+     */
+    public function placeOrder(PlaceOrderRequest $request): JsonResponse
     {
         $order = $this->placeOrderService->place($request->items, $request->coupon);
 

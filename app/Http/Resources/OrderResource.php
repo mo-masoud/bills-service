@@ -25,7 +25,7 @@ class OrderResource extends JsonResource
         ];
     }
 
-    protected function transformItems()
+    protected function transformItems(): array
     {
         $items = [];
         foreach ($this->powerlevelItems as $item) {
@@ -42,6 +42,20 @@ class OrderResource extends JsonResource
                 'current_level' => $item->current_level,
                 'desired_level' => $item->desired_level,
                 'price' => $item->price,
+                'type' => 'powerlevel'
+            ];
+        }
+
+        foreach ($this->questItems as $item) {
+            $items[] = [
+                'game' => new BasicGameResource($item->game),
+                'quest' => [
+                    'id' => $item->quest_id,
+                    'name' => $item->quest->name ?? null,
+                    'difficulty' => $item->quest->difficulty ?? null,
+                ],
+                'price' => $item->price,
+                'type' => 'quest'
             ];
         }
         return $items;

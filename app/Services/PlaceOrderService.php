@@ -6,10 +6,13 @@ use App\Models\Coupon;
 use App\Models\Game;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class PlaceOrderService
 {
-    // place function 
+    /**
+     * @throws ValidationException
+     */
     public function place(array $items, string $code = null)
     {
 
@@ -37,6 +40,8 @@ class PlaceOrderService
             }
         }
 
+        $items = collect($items);
+
         try {
             DB::beginTransaction();
 
@@ -47,23 +52,34 @@ class PlaceOrderService
                 'status' => 'pending',
             ]);
 
-            $order->powerlevelItems()->createMany($items);
+            if ($items->where('type', 'quest')->count()) {
+                $order->questItems()->createMany(
+                    $items->where('type', 'quest')->toArray()
+                );
+            }
+
+            if ($items->where('type', 'powerlevel')->count()) {
+                $order->powerlevelItems()->createMany(
+                    $items->where('type', 'powerlevel')->toArray()
+                );
+            }
 
             DB::commit();
 
             return $order;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
 
             throw ValidationException::withMessages([
                 "items" => $th->getMessage(),
             ]);
         }
-
-        return $items;
     }
 
-    private function handleOrderItems($items)
+    /**
+     * @throws ValidationException
+     */
+    private function handleOrderItems($items): array
     {
         $data = [];
 
@@ -71,12 +87,17 @@ class PlaceOrderService
             // check on type of item.
             if ($item['type'] === 'powerlevel') {
                 $data[] = $this->handlePowerlevelItem($item, $index);
+            } elseif ($item['type'] === 'quest') {
+                $data[] = $this->handleQuestItem($item, $index);
             }
         }
 
         return $data;
     }
 
+    /**
+     * @throws ValidationException
+     */
     private function handlePowerlevelItem($item, $index)
     {
         try {
@@ -96,7 +117,7 @@ class PlaceOrderService
             unset($item['boost_method_id']);
 
             return $item;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw ValidationException::withMessages([
                 "items" => $th->getMessage(),
             ]);
@@ -123,7 +144,10 @@ class PlaceOrderService
             ->findOrFail($item['game_id']);
     }
 
-    private function validateGameAndSkills($game, $item, $index)
+    /**
+     * @throws ValidationException
+     */
+    private function validateGameAndSkills($game, $item, $index): void
     {
         if (!isset($game->skills[0]->bootMethods[0])) {
             throw ValidationException::withMessages([
@@ -133,22 +157,7 @@ class PlaceOrderService
         $this->validateOnLevels($game, $item, $index);
     }
 
-    private function getPriceRangeForSkill($skill, $item, $index)
-    {
-        $priceRange = $skill->prices
-            ->where('max_level', '>=', $item['desired_level'])
-            ->first();
-
-        if (!$priceRange) {
-            throw ValidationException::withMessages([
-                "items.$index" => "Cannot detect price range for the item.",
-            ]);
-        }
-
-        return $priceRange;
-    }
-
-    private function validateOnLevels(Game $game, array $item, int $index)
+    private function validateOnLevels(Game $game, array $item, int $index): void
     {
         // validate on selecting levels.
         if ($item['current_level'] > $game->powerlevel->levels) {
@@ -168,5 +177,44 @@ class PlaceOrderService
                 "items.$index.desired_level" => 'The desired level field should be greater than current level.'
             ]);
         }
+    }
+
+    private function getPriceRangeForSkill($skill, $item, $index)
+    {
+        $priceRange = $skill->prices
+            ->where('max_level', '>=', $item['desired_level'])
+            ->first();
+
+        if (!$priceRange) {
+            throw ValidationException::withMessages([
+                "items.$index" => "Cannot detect price range for the item.",
+            ]);
+        }
+
+        return $priceRange;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    protected function handleQuestItem(array $item, int|string $index): array
+    {
+        $game = Game::with([
+            'quests' => function ($q) use ($item) {
+                $q->whereId($item['quest_id']);
+            },
+        ])
+            ->whereHas('quests')
+            ->findOrFail($item['game_id']);
+
+        if (!isset($game->quests[0])) {
+            throw ValidationException::withMessages([
+                "items.$index.quest_id" => 'The quest id field is not correct or assigned to another game.'
+            ]);
+        }
+
+        $item['price'] = $game->quests[0]->price;
+
+        return $item;
     }
 }

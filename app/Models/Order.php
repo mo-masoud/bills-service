@@ -28,6 +28,11 @@ class Order extends Model
         return $this->hasMany(OrderPowerLevelItem::class);
     }
 
+    public function questItems(): HasMany
+    {
+        return $this->hasMany(QuestOrderItem::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
