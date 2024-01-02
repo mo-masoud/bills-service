@@ -33,8 +33,14 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('home', [HomeController::class, 'home']);
-Route::get('games', [GamesController::class, 'index']);
-Route::get('games/{game}', [GamesController::class, 'show']);
-Route::get('games/{game}/details', [GamesController::class, 'showDetails']);
+
+// group of games routes
+Route::group(['prefix' => 'games'], function () {
+    Route::get('/', [GamesController::class, 'index']);
+    Route::get('/{game}', [GamesController::class, 'show']);
+    Route::get('/{game}/details', [GamesController::class, 'showDetails']);
+    Route::get('/{game}/quests', [GamesController::class, 'quests']);
+    Route::get('/{game}/services', [GamesController::class, 'services']);
+});
 
 Route::post('validate-coupon-code', [PlaceOrdersController::class, 'validateCouponCode']);

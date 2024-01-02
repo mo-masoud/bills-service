@@ -23,4 +23,17 @@ class GamesController extends Controller
     {
         return response()->json(new GameResource($game));
     }
+
+    public function quests(Game $game): JsonResponse
+    {
+        $quests = $game->quests()
+            ->when(request('search'), fn($q) => $q->where('name', 'like', '%'.request('search').'%'))
+            ->paginate();
+        return response()->json($quests);
+    }
+
+    public function services(Game $game): JsonResponse
+    {
+        return response()->json($game->services);
+    }
 }
