@@ -27,18 +27,19 @@ class OrdersTable extends Table
     protected function columns(): iterable
     {
         return [
-            TD::make('ID - REF')->render(fn ($order) => $order->id),
+            TD::make('ID - REF')->render(fn($order) => $order->id),
             TD::make('user')->render(
-                fn ($order) =>
-                Link::make($order->user->name . ' - ' . $order->user->email)
+                fn($order) => Link::make($order->user->name.' - '.$order->user->email)
                     ->route('platform.systems.users.edit', $order->user)
             ),
-            TD::make('status')->render(fn ($order) => $this->renderStatus($order->status)),
-            TD::make('Items Count')->render(fn ($order) => $order->powerlevel_items_count),
-            TD::make('Original Price')->render(fn ($order) => $order->original_price),
-            TD::make('Discount Price')->render(fn ($order) => $order->discount_price),
-            TD::make('Total Price')->render(fn ($order) => $order->total_price),
-            TD::make('Total Price')->render(fn ($order) => $order->total_price),
+            TD::make('status')->render(fn($order) => $this->renderStatus($order->status)),
+            TD::make('Items Count')
+                ->render(fn($order
+                ) => $order->powerlevel_items_count + $order->quest_items_count + $order->service_items_count),
+            TD::make('Original Price')->render(fn($order) => $order->original_price),
+            TD::make('Discount Price')->render(fn($order) => $order->discount_price),
+            TD::make('Total Price')->render(fn($order) => $order->total_price),
+            TD::make('Total Price')->render(fn($order) => $order->total_price),
             TD::make('created_at', 'Date of creation')
                 ->usingComponent(DateTimeSplit::class),
         ];

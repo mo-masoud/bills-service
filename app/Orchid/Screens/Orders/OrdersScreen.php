@@ -4,6 +4,8 @@ namespace App\Orchid\Screens\Orders;
 
 use App\Models\Order;
 use App\Orchid\Layouts\Orders\OrdersTable;
+use Orchid\Screen\Action;
+use Orchid\Screen\Layout;
 use Orchid\Screen\Screen;
 
 class OrdersScreen extends Screen
@@ -16,7 +18,10 @@ class OrdersScreen extends Screen
     public function query(): iterable
     {
         return [
-            'orders' => Order::with('user')->withCount('powerlevelItems')->latest()->paginate(),
+            'orders' => Order::with('user')
+                ->withCount('powerlevelItems', 'questItems', 'serviceItems')
+                ->latest()
+                ->paginate(),
         ];
     }
 
@@ -33,7 +38,7 @@ class OrdersScreen extends Screen
     /**
      * The screen's action buttons.
      *
-     * @return \Orchid\Screen\Action[]
+     * @return Action[]
      */
     public function commandBar(): iterable
     {
@@ -43,7 +48,7 @@ class OrdersScreen extends Screen
     /**
      * The screen's layout elements.
      *
-     * @return \Orchid\Screen\Layout[]|string[]
+     * @return Layout[]|string[]
      */
     public function layout(): iterable
     {

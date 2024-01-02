@@ -58,6 +58,18 @@ class OrderResource extends JsonResource
                 'type' => 'quest'
             ];
         }
+
+        foreach ($this->serviceItems as $item) {
+            $items[] = [
+                'game' => new BasicGameResource($item->game),
+                'service' => [
+                    'id' => $item->service_id,
+                    'name' => $item->service->name ?? null,
+                ],
+                'price' => $item->price,
+                'type' => 'service'
+            ];
+        }
         return $items;
     }
 }

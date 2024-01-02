@@ -33,6 +33,11 @@ class Order extends Model
         return $this->hasMany(QuestOrderItem::class);
     }
 
+    public function serviceItems(): HasMany
+    {
+        return $this->hasMany(ServiceOrderItem::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -64,6 +64,12 @@ class PlaceOrderService
                 );
             }
 
+            if ($items->where('type', 'service')->count()) {
+                $order->serviceItems()->createMany(
+                    $items->where('type', 'service')->toArray()
+                );
+            }
+
             DB::commit();
 
             return $order;
@@ -89,6 +95,8 @@ class PlaceOrderService
                 $data[] = $this->handlePowerlevelItem($item, $index);
             } elseif ($item['type'] === 'quest') {
                 $data[] = $this->handleQuestItem($item, $index);
+            } elseif ($item['type'] === 'service') {
+                $data[] = $this->handleServiceItem($item, $index);
             }
         }
 
@@ -214,6 +222,30 @@ class PlaceOrderService
         }
 
         $item['price'] = $game->quests[0]->price;
+
+        return $item;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    protected function handleServiceItem(array $item, int|string $index): array
+    {
+        $game = Game::with([
+            'services' => function ($q) use ($item) {
+                $q->whereId($item['service_id']);
+            },
+        ])
+            ->whereHas('services')
+            ->findOrFail($item['game_id']);
+
+        if (!isset($game->services[0])) {
+            throw ValidationException::withMessages([
+                "items.$index.service_id" => 'The service id field is not correct or assigned to another game.'
+            ]);
+        }
+
+        $item['price'] = $game->services[0]->price;
 
         return $item;
     }
