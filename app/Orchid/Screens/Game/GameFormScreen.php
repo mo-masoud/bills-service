@@ -6,6 +6,7 @@ use App\Models\Game;
 use App\Orchid\Layouts\Game\GameFormLayout;
 use App\Orchid\Layouts\Game\GamePowerlevelFormLayout;
 use App\Orchid\Layouts\Game\GameSkillSectionsFormLayout;
+use App\Orchid\Layouts\Game\QuestsFormLayout;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Orchid\Screen\Action;
@@ -76,7 +77,7 @@ class GameFormScreen extends Screen
                         Button::make($this->game->exists ? 'Update Game' : 'Create Game')
                             ->icon('plus-circle')
                             ->type(Color::BASIC)
-                            ->method('createOrUpdateGame'),
+                            ->method('saveGame'),
                     ),
 
                 'Powerlevel' => Layout::block(GamePowerlevelFormLayout::class)
@@ -86,7 +87,7 @@ class GameFormScreen extends Screen
                         Button::make($this->game->exists ? 'Update Powerlevel' : 'Create Powerlevel')
                             ->icon('plus-circle')
                             ->type(Color::BASIC)
-                            ->method('createOrUpdatePowerLevel'),
+                            ->method('savePowerLevel'),
                     ),
 
                 'Skill Sections' => Layout::block(GameSkillSectionsFormLayout::class)
@@ -96,13 +97,23 @@ class GameFormScreen extends Screen
                         Button::make($this->game->exists ? 'Update Sections' : 'Create Sections')
                             ->icon('plus-circle')
                             ->type(Color::BASIC)
-                            ->method('createOrUpdatePowerSections'),
+                            ->method('saveSections'),
+                    ),
+
+                'Quests' => Layout::block(QuestsFormLayout::class)
+                    ->title(__('Quests'))
+                    ->description('Control your game\'s quests')
+                    ->commands(
+                        Button::make($this->game->exists ? 'Update Quests' : 'Create Quests')
+                            ->icon('plus-circle')
+                            ->type(Color::BASIC)
+                            ->method('saveQuests'),
                     ),
             ]),
         ];
     }
 
-    public function createOrUpdateGame(Request $request): RedirectResponse
+    public function saveGame(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'game.name' => 'required|string|max:255',
@@ -128,7 +139,7 @@ class GameFormScreen extends Screen
         return redirect()->route('platform.games.edit', $game);
     }
 
-    public function createOrUpdatePowerLevel(Request $request): RedirectResponse
+    public function savePowerLevel(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'game.powerlevel.description' => 'required|string',
@@ -150,7 +161,7 @@ class GameFormScreen extends Screen
         return redirect()->back();
     }
 
-    public function createOrUpdatePowerSections(Request $request): RedirectResponse
+    public function saveSections(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'game.sections' => 'nullable|array',
@@ -170,6 +181,34 @@ class GameFormScreen extends Screen
         $this->game->sections()->whereNotIn('name', $savedSections)->delete();
 
         Toast::success("Sections for game {$this->game->name} was saved successfully.");
+        return redirect()->back();
+    }
+
+    public function saveQuests(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'game.quests' => 'nullable|array',
+            'game.quests.*.name' => 'required|string',
+            'game.quests.*.difficulty' => 'required|string',
+            'game.quests.*.price' => 'required|numeric|min:0',
+        ]);
+
+        if (!$this->game->exists) {
+            Toast::error('You must create your game first');
+            return redirect()->back();
+        }
+
+        $savedQuests = [];
+        foreach ($data['game']['quests'] as $quest) {
+            $this->game->quests()->updateOrCreate([
+                'game_id' => $this->game->id,
+                'name' => $quest['name'],
+            ], $quest);
+            $savedQuests[] = $quest['name'];
+        }
+        $this->game->quests()->whereNotIn('name', $savedQuests)->delete();
+
+        Toast::success("Quests for game {$this->game->name} was saved successfully.");
         return redirect()->back();
     }
 

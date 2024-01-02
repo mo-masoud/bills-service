@@ -42,4 +42,9 @@ class Game extends Model
     {
         return $this->hasMany(Skill::class);
     }
+
+    public function quests(): HasMany
+    {
+        return $this->hasMany(Quest::class);
+    }
 }
