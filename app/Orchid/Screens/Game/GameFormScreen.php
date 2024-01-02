@@ -7,6 +7,7 @@ use App\Orchid\Layouts\Game\GameFormLayout;
 use App\Orchid\Layouts\Game\GamePowerlevelFormLayout;
 use App\Orchid\Layouts\Game\GameSkillSectionsFormLayout;
 use App\Orchid\Layouts\Game\QuestsFormLayout;
+use App\Orchid\Layouts\Game\ServicesFormLayout;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Orchid\Screen\Action;
@@ -109,6 +110,16 @@ class GameFormScreen extends Screen
                             ->type(Color::BASIC)
                             ->method('saveQuests'),
                     ),
+
+                'Services' => Layout::block(ServicesFormLayout::class)
+                    ->title(__('Services'))
+                    ->description('Control your game\'s services')
+                    ->commands(
+                        Button::make($this->game->exists ? 'Update Services' : 'Create Services')
+                            ->icon('plus-circle')
+                            ->type(Color::BASIC)
+                            ->method('saveServices'),
+                    ),
             ]),
         ];
     }
@@ -209,6 +220,33 @@ class GameFormScreen extends Screen
         $this->game->quests()->whereNotIn('name', $savedQuests)->delete();
 
         Toast::success("Quests for game {$this->game->name} was saved successfully.");
+        return redirect()->back();
+    }
+
+    public function saveServices(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'game.services' => 'nullable|array',
+            'game.services.*.name' => 'required|string',
+            'game.services.*.price' => 'required|numeric|min:0',
+        ]);
+
+        if (!$this->game->exists) {
+            Toast::error('You must create your game first');
+            return redirect()->back();
+        }
+
+        $savedServices = [];
+        foreach ($data['game']['services'] as $quest) {
+            $this->game->services()->updateOrCreate([
+                'game_id' => $this->game->id,
+                'name' => $quest['name'],
+            ], $quest);
+            $savedServices[] = $quest['name'];
+        }
+        $this->game->services()->whereNotIn('name', $savedServices)->delete();
+
+        Toast::success("Services for game {$this->game->name} was saved successfully.");
         return redirect()->back();
     }
 

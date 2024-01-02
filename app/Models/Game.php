@@ -47,4 +47,9 @@ class Game extends Model
     {
         return $this->hasMany(Quest::class);
     }
+
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class);
+    }
 }
