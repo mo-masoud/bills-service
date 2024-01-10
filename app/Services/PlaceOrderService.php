@@ -4,16 +4,22 @@ namespace App\Services;
 
 use App\Models\Coupon;
 use App\Models\Game;
+use App\Models\PaymentMethod;
+use App\Services\Payments\BinancePayment;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class PlaceOrderService
 {
+
     /**
      * @throws ValidationException
      */
-    public function place(array $items, string $code = null)
+    public function place(array $items, int $paymentId, string $code = null)
     {
 
         $items = $this->handleOrderItems($items);
@@ -42,14 +48,22 @@ class PlaceOrderService
 
         $items = collect($items);
 
+        $totalPrice = $originalPrice - $discountPrice;
+
         try {
             DB::beginTransaction();
 
+            $merchantTradeNo = mt_rand(982538, 9825382937292);
+
+            $payment = PaymentMethod::findOrFail($paymentId);
+
             $order = request()->user()->orders()->create([
+                'payment_method_id' => $paymentId,
                 'original_price' => $originalPrice,
                 'discount_price' => $discountPrice,
-                'total_price' => $originalPrice - $discountPrice,
+                'total_price' => $totalPrice,
                 'status' => 'pending',
+                'merchant_trade_no' => $merchantTradeNo,
             ]);
 
             if ($items->where('type', 'quest')->count()) {
@@ -70,9 +84,22 @@ class PlaceOrderService
                 );
             }
 
-            DB::commit();
 
-            return $order;
+            if ($payment->name === 'Binance') {
+                $binancePayment = new BinancePayment();
+                $checkout = $binancePayment->createPayment([
+                    'merchantTradeNo' => $merchantTradeNo,
+                    'orderAmount' => $totalPrice,
+                    'items' => $items,
+                ]);
+
+                DB::commit();
+
+                return [
+                    'checkout' => $checkout,
+                    'order' => $order,
+                ];
+            }
         } catch (Throwable $th) {
             DB::rollBack();
 
@@ -119,7 +146,7 @@ class PlaceOrderService
             $priceRange = $this->getPriceRangeForSkill($skill, $item, $index);
 
             $levels = abs($item['desired_level'] - $item['current_level']);
-            $item['price'] = $priceRange->price * $levels;
+            $item['price'] = ($priceRange->price + $skill->bootMethods->first()->price) * $levels;
 
             $item['boot_method_id'] = $item['boost_method_id'];
             unset($item['boost_method_id']);
@@ -132,8 +159,8 @@ class PlaceOrderService
         }
     }
 
-    private function loadGameWithRelations($item)
-    {
+    private function loadGameWithRelations($item
+    ): Model|Collection|Builder|array|null {
         return Game::with([
             'powerlevel',
             'skills' => function ($q) use ($item) {
@@ -165,6 +192,9 @@ class PlaceOrderService
         $this->validateOnLevels($game, $item, $index);
     }
 
+    /**
+     * @throws ValidationException
+     */
     private function validateOnLevels(Game $game, array $item, int $index): void
     {
         // validate on selecting levels.
@@ -187,6 +217,9 @@ class PlaceOrderService
         }
     }
 
+    /**
+     * @throws ValidationException
+     */
     private function getPriceRangeForSkill($skill, $item, $index)
     {
         $priceRange = $skill->prices

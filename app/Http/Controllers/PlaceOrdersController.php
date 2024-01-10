@@ -17,7 +17,7 @@ class PlaceOrdersController extends Controller
     }
 
     // validate the coupon code.
-    public function validateCouponCode()
+    public function validateCouponCode(): JsonResponse
     {
         $coupon = Coupon::validAndAvailable()->whereCode(request('coupon'))->first();
 
@@ -39,11 +39,17 @@ class PlaceOrdersController extends Controller
      */
     public function placeOrder(PlaceOrderRequest $request): JsonResponse
     {
-        $order = $this->placeOrderService->place($request->items, $request->coupon);
+        $placeOrder = $this->placeOrderService->place(
+            $request->get('items'),
+            $request->get('payment_method_id'),
+            $request->get('coupon'),
+        );
 
         return response()->json([
             'message' => 'Order has been placed successfully',
-            'order' => new OrderResource($order),
+            'status' => 'success',
+            'checkout_url' => $placeOrder['checkout'],
+            'order' => new OrderResource($placeOrder['order']),
         ], 201);
     }
 }

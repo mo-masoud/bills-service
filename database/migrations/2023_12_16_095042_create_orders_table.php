@@ -5,8 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,7 +17,7 @@ return new class extends Migration
             $table->unsignedDouble('original_price', 10, 2);
             $table->unsignedDouble('discount_price', 10, 2)->default(0);
             $table->unsignedDouble('total_price', 10, 2);
-            $table->string('status', 10)->index(); // pending, canceled and completed
+            $table->string('status', 10)->index(); // pending, canceled, failed and completed
             $table->string('cancellation_reason')->nullable();
             $table->timestamps();
         });

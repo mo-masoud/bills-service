@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlaceOrdersController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('home', [HomeController::class, 'home']);
+Route::get('payment-methods', [PaymentController::class, 'index']);
 
 // group of games routes
 Route::group(['prefix' => 'games'], function () {
@@ -44,3 +46,5 @@ Route::group(['prefix' => 'games'], function () {
 });
 
 Route::post('validate-coupon-code', [PlaceOrdersController::class, 'validateCouponCode']);
+
+Route::any('binance_callback', [PaymentController::class, 'binanceCallback']);
