@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class BinancePayment implements Payment
@@ -66,6 +67,7 @@ class BinancePayment implements Payment
             "BinancePay-Signature" => $signature
         ])->post("https://bpay.binanceapi.com/binancepay/openapi/v3/order", $request);
 
+        Log::info('Binance payment', $response->json());
         if ($response->failed()) {
             throw new Exception('Binance payment failed');
         }
