@@ -41,14 +41,12 @@ class PlaceOrdersController extends Controller
     {
         $placeOrder = $this->placeOrderService->place(
             $request->get('items'),
-            $request->get('payment_method_id'),
             $request->get('coupon'),
         );
 
         return response()->json([
             'message' => 'Order has been placed successfully',
             'status' => 'success',
-            'checkout_url' => $placeOrder['checkout'],
             'order' => new OrderResource($placeOrder['order']),
         ], 201);
     }

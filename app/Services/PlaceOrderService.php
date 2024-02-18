@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\Coupon;
 use App\Models\Game;
-use App\Models\PaymentMethod;
-use App\Services\Payments\BinancePayment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +17,7 @@ class PlaceOrderService
     /**
      * @throws ValidationException
      */
-    public function place(array $items, int $paymentId, string $code = null)
+    public function place(array $items, string $code = null)
     {
 
         $items = $this->handleOrderItems($items);
@@ -55,10 +53,8 @@ class PlaceOrderService
 
             $merchantTradeNo = mt_rand(982538, 9825382937292);
 
-            $payment = PaymentMethod::findOrFail($paymentId);
 
             $order = request()->user()->orders()->create([
-                'payment_method_id' => $paymentId,
                 'original_price' => $originalPrice,
                 'discount_price' => $discountPrice,
                 'total_price' => $totalPrice,
@@ -85,21 +81,9 @@ class PlaceOrderService
             }
 
 
-            if ($payment->name === 'Binance') {
-                $binancePayment = new BinancePayment();
-                $checkout = $binancePayment->createPayment([
-                    'merchantTradeNo' => $merchantTradeNo,
-                    'orderAmount' => $totalPrice,
-                    'items' => $items,
-                ]);
-
-                DB::commit();
-
-                return [
-                    'checkout' => $checkout,
-                    'order' => $order,
-                ];
-            }
+            return [
+                'order' => $order,
+            ];
         } catch (Throwable $th) {
             DB::rollBack();
 
@@ -159,7 +143,8 @@ class PlaceOrderService
         }
     }
 
-    private function loadGameWithRelations($item
+    private function loadGameWithRelations(
+        $item
     ): Model|Collection|Builder|array|null {
         return Game::with([
             'powerlevel',

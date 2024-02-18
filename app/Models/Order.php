@@ -16,8 +16,6 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'payment_method_id',
-        'merchant_trade_no',
         'original_price',
         'discount_price',
         'total_price',
@@ -43,10 +41,5 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function paymentMethod(): BelongsTo
-    {
-        return $this->belongsTo(PaymentMethod::class);
     }
 }
