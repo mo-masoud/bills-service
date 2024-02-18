@@ -20,8 +20,7 @@ class OrderResource extends JsonResource
             'discount_price' => $this->discount_price,
             'total_price' => $this->total_price,
             'status' => $this->status,
-            'merchant_trade_no' => $this->merchant_trade_no,
-            'payment_method' => $this->paymentMethod->name ?? null,
+            'created_at' => $this->created_at,
             'cancellation_reason' => $this->cancellation_reason,
             'items' => $this->transformItems(),
         ];
