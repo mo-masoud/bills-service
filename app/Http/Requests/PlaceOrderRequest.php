@@ -15,7 +15,6 @@ class PlaceOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payment_method_id' => 'required|numeric|exists:payment_methods,id',
             'items' => 'required|array|min:1',
             'coupon' => 'nullable|string',
             'items.*.type' => 'required|string|in:powerlevel,quest,service',
