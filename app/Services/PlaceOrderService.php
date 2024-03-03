@@ -62,6 +62,7 @@ class PlaceOrderService
                 'merchant_trade_no' => $merchantTradeNo,
             ]);
 
+
             if ($items->where('type', 'quest')->count()) {
                 $order->questItems()->createMany(
                     $items->where('type', 'quest')->toArray()
@@ -79,6 +80,8 @@ class PlaceOrderService
                     $items->where('type', 'service')->toArray()
                 );
             }
+
+            DB::commit();
 
 
             return [
