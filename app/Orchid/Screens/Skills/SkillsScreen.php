@@ -70,9 +70,8 @@ class SkillsScreen extends Screen
         return [
             Layout::table('skills', [
                 TD::make('name'),
-                TD::make('price'),
-                TD::make('game')->render(fn ($skill) => Link::make($skill->game->name)->route('platform.games.view', $skill->game)),
-                TD::make('section')->render(fn ($skill) => $skill->section ? Link::make($skill->section->name)->route('platform.games.edit', $skill->game) : '-'),
+                TD::make('game')->render(fn($skill) => Link::make($skill->game?->name)->route('platform.games.view', $skill->game)),
+                TD::make('section')->render(fn($skill) => $skill->section ? Link::make($skill->section->name)->route('platform.games.edit', $skill->game) : '-'),
                 TD::make('Actions')
                     ->alignRight()
                     ->cantHide()
