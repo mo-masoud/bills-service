@@ -9,6 +9,7 @@
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
+    <meta name="trustpilot-one-time-domain-verification-id" content="2331a472-3937-4fff-88cc-4baba645ede3" />
     <title>React App</title>
     <script type="text/javascript">
         var Tawk_API = Tawk_API || {},
