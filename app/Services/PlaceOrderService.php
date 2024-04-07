@@ -130,10 +130,11 @@ class PlaceOrderService
 
             $skill = $game->skills->first();
 
-            $priceRange = $this->getPriceRangeForSkill($skill, $item, $index);
+            $price = $this->getPriceBasedOnRangeForSkill($skill, $item, $index);
 
-            $levels = abs($item['desired_level'] - $item['current_level']);
-            $item['price'] = ($priceRange->price + $skill->bootMethods->first()->price) * $levels;
+            $bootMethod = $skill->bootMethods->first();
+
+            $item['price'] = $price * $bootMethod->price;
 
             $item['boot_method_id'] = $item['boost_method_id'];
             unset($item['boost_method_id']);
@@ -208,19 +209,15 @@ class PlaceOrderService
     /**
      * @throws ValidationException
      */
-    private function getPriceRangeForSkill($skill, $item, $index)
+    private function getPriceBasedOnRangeForSkill($skill, $item, $index)
     {
-        $priceRange = $skill->prices
-            ->where('max_level', '>=', $item['desired_level'])
-            ->first();
-
-        if (!$priceRange) {
-            throw ValidationException::withMessages([
-                "items.$index" => "Cannot detect price range for the item.",
-            ]);
-        }
-
-        return $priceRange;
+        return $skill->prices()
+            ->where(function ($q) use ($item) {
+                $q->where('min_level', '<=', $item['current_level'])
+                    ->where('max_level', '>=', $item['desired_level']);
+            })
+            ->orWhere('max_level', '<=', $item['desired_level'])
+            ->sum('price');
     }
 
     /**
