@@ -100,26 +100,6 @@ class GameFormScreen extends Screen
                             ->type(Color::BASIC)
                             ->method('saveSections'),
                     ),
-
-                'Quests' => Layout::block(QuestsFormLayout::class)
-                    ->title(__('Quests'))
-                    ->description('Control your game\'s quests')
-                    ->commands(
-                        Button::make($this->game->exists ? 'Update Quests' : 'Create Quests')
-                            ->icon('plus-circle')
-                            ->type(Color::BASIC)
-                            ->method('saveQuests'),
-                    ),
-
-                'Services' => Layout::block(ServicesFormLayout::class)
-                    ->title(__('Services'))
-                    ->description('Control your game\'s services')
-                    ->commands(
-                        Button::make($this->game->exists ? 'Update Services' : 'Create Services')
-                            ->icon('plus-circle')
-                            ->type(Color::BASIC)
-                            ->method('saveServices'),
-                    ),
             ]),
         ];
     }
@@ -192,61 +172,6 @@ class GameFormScreen extends Screen
         $this->game->sections()->whereNotIn('name', $savedSections)->delete();
 
         Toast::success("Sections for game {$this->game->name} was saved successfully.");
-        return redirect()->back();
-    }
-
-    public function saveQuests(Request $request): RedirectResponse
-    {
-        $data = $request->validate([
-            'game.quests' => 'nullable|array',
-            'game.quests.*.name' => 'required|string',
-            'game.quests.*.difficulty' => 'required|string',
-            'game.quests.*.price' => 'required|numeric|min:0',
-        ]);
-
-        if (!$this->game->exists) {
-            Toast::error('You must create your game first');
-            return redirect()->back();
-        }
-
-        $savedQuests = [];
-        foreach ($data['game']['quests'] as $quest) {
-            $this->game->quests()->updateOrCreate([
-                'game_id' => $this->game->id,
-                'name' => $quest['name'],
-            ], $quest);
-            $savedQuests[] = $quest['name'];
-        }
-        $this->game->quests()->whereNotIn('name', $savedQuests)->delete();
-
-        Toast::success("Quests for game {$this->game->name} was saved successfully.");
-        return redirect()->back();
-    }
-
-    public function saveServices(Request $request): RedirectResponse
-    {
-        $data = $request->validate([
-            'game.services' => 'nullable|array',
-            'game.services.*.name' => 'required|string',
-            'game.services.*.price' => 'required|numeric|min:0',
-        ]);
-
-        if (!$this->game->exists) {
-            Toast::error('You must create your game first');
-            return redirect()->back();
-        }
-
-        $savedServices = [];
-        foreach ($data['game']['services'] as $quest) {
-            $this->game->services()->updateOrCreate([
-                'game_id' => $this->game->id,
-                'name' => $quest['name'],
-            ], $quest);
-            $savedServices[] = $quest['name'];
-        }
-        $this->game->services()->whereNotIn('name', $savedServices)->delete();
-
-        Toast::success("Services for game {$this->game->name} was saved successfully.");
         return redirect()->back();
     }
 
