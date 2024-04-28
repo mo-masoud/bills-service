@@ -59,7 +59,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Infernal Cape'))
                 ->icon('bs.layers')
-                ->route('platform.services.fire-cape'),
+                ->route('platform.services.infernal-cape'),
 
             Menu::make(__('Fortis Colosseum'))
                 ->icon('bs.layers')
