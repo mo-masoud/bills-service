@@ -52,6 +52,46 @@ class PlatformProvider extends OrchidServiceProvider
                 ->permission('platform.skills')
                 ->divider(),
 
+            Menu::make(__('Fire Cape'))
+                ->icon('bs.layers')
+                ->title(__('Services')),
+            // ->route('platform.services'),
+
+            Menu::make(__('Infernal Cape'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+
+            Menu::make(__('Fortis Colosseum'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+            Menu::make(__('Quests'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+            Menu::make(__('Minigames'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+
+            Menu::make(__('Raids'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+
+            Menu::make(__('PvM | Bossing'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+
+            Menu::make(__('Combat Achievements'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+
+            Menu::make(__('Achievement Diary'))
+                ->icon('bs.layers'),
+            // ->route('platform.services'),
+
+            Menu::make(__('Ironman Collecting'))
+                ->icon('bs.layers')
+                ->divider(),
+            // ->route('platform.services'),
+
             Menu::make(__('Users'))
                 ->icon('bs.people')
                 ->route('platform.systems.users')
