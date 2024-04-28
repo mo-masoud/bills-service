@@ -11,6 +11,8 @@ use App\Orchid\Screens\Orders\OrdersScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\Services\FireCapeBuildsScreen;
+use App\Orchid\Screens\Services\FireCapeScreen;
 use App\Orchid\Screens\Skills\SkillsScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
@@ -112,6 +114,16 @@ Route::screen('skills', SkillsScreen::class)->name('platform.skills')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Skills'), route('platform.skills')));
+
+Route::screen('services/fire-cape', FireCapeScreen::class)->name('platform.services.fire-cape')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Fire Cape'), route('platform.services.fire-cape')));
+
+Route::screen('services/fire-cape/builds/{option}', FireCapeBuildsScreen::class)->name('platform.services.fire-cape.builds')
+    ->breadcrumbs(fn (Trail $trail, $option) => $trail
+        ->parent('platform.services.fire-cape')
+        ->push($option->name . ' ' . __('Builds'), route('platform.services.fire-cape.builds', $option->id)));
 
 Route::screen('home', HomeScreen::class)
     ->name('platform.home')

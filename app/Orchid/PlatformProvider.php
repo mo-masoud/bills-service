@@ -54,43 +54,43 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Fire Cape'))
                 ->icon('bs.layers')
-                ->title(__('Services')),
-            // ->route('platform.services'),
+                ->title(__('Services'))
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('Infernal Cape'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('Fortis Colosseum'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
             Menu::make(__('Quests'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
             Menu::make(__('Minigames'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('Raids'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('PvM | Bossing'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('Combat Achievements'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('Achievement Diary'))
-                ->icon('bs.layers'),
-            // ->route('platform.services'),
+                ->icon('bs.layers')
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('Ironman Collecting'))
                 ->icon('bs.layers')
-                ->divider(),
-            // ->route('platform.services'),
+                ->divider()
+                ->route('platform.services.fire-cape'),
 
             Menu::make(__('Users'))
                 ->icon('bs.people')
