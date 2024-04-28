@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('service')->index();
             $table->string('name');
             $table->double('price', 10, 2)->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('service_options')->nullOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained('service_options')->cascadeOnDelete();
             $table->string('type')->default('radio');
             $table->timestamps();
         });

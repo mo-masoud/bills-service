@@ -183,6 +183,7 @@ class FireCapeBuildsScreen extends Screen
                 'name' => 'Express',
                 'price' => request('express_price'),
                 'service' => $option->service,
+                'type' => 'checkbox'
             ]);
         }
 
@@ -210,6 +211,7 @@ class FireCapeBuildsScreen extends Screen
                 'name' => 'Express',
                 'price' => request('express_price'),
                 'service' => $build->service,
+                'type' => 'checkbox'
             ]);
         } else {
             $build->children()->where('name', 'Express')->delete();
