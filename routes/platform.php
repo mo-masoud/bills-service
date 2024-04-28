@@ -13,6 +13,8 @@ use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\Services\FireCapeBuildsScreen;
 use App\Orchid\Screens\Services\FireCapeScreen;
+use App\Orchid\Screens\Services\FortisColosseumScreen;
+use App\Orchid\Screens\Services\FortisColosseumServicesScreen;
 use App\Orchid\Screens\Services\InfernalCapeMagicsScreen;
 use App\Orchid\Screens\Services\InfernalCapeScreen;
 use App\Orchid\Screens\Skills\SkillsScreen;
@@ -132,10 +134,20 @@ Route::screen('services/infernal-cape', InfernalCapeScreen::class)->name('platfo
         ->parent('platform.index')
         ->push(__('Infernal Cape'), route('platform.services.infernal-cape')));
 
-Route::screen('services/infernal-cape/builds/{option}', InfernalCapeMagicsScreen::class)->name('platform.services.infernal-cape.magics')
+Route::screen('services/infernal-cape/magics/{option}', InfernalCapeMagicsScreen::class)->name('platform.services.infernal-cape.magics')
     ->breadcrumbs(fn (Trail $trail, $option) => $trail
         ->parent('platform.services.infernal-cape')
         ->push($option->name . ' ' . __('Magics'), route('platform.services.infernal-cape.magics', $option->id)));
+
+Route::screen('services/fortis-colosseum', FortisColosseumScreen::class)->name('platform.services.fortis-colosseum')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Fortis Colosseum'), route('platform.services.fortis-colosseum')));
+
+Route::screen('services/fortis-colosseum/services/{option}', FortisColosseumServicesScreen::class)->name('platform.services.fortis-colosseum.services')
+    ->breadcrumbs(fn (Trail $trail, $option) => $trail
+        ->parent('platform.services.fortis-colosseum')
+        ->push($option->name . ' ' . __('Character Types'), route('platform.services.fortis-colosseum.services', $option->id)));
 
 Route::screen('home', HomeScreen::class)
     ->name('platform.home')
