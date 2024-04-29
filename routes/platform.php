@@ -17,6 +17,8 @@ use App\Orchid\Screens\Services\FortisColosseumScreen;
 use App\Orchid\Screens\Services\FortisColosseumServicesScreen;
 use App\Orchid\Screens\Services\InfernalCapeMagicsScreen;
 use App\Orchid\Screens\Services\InfernalCapeScreen;
+use App\Orchid\Screens\Services\MinigameScreen;
+use App\Orchid\Screens\Services\MinigameTypesScreen;
 use App\Orchid\Screens\Skills\SkillsScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
@@ -148,6 +150,16 @@ Route::screen('services/fortis-colosseum/services/{option}', FortisColosseumServ
     ->breadcrumbs(fn (Trail $trail, $option) => $trail
         ->parent('platform.services.fortis-colosseum')
         ->push($option->name . ' ' . __('Character Types'), route('platform.services.fortis-colosseum.services', $option->id)));
+
+Route::screen('services/minigames', MinigameScreen::class)->name('platform.services.minigames')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Minigames'), route('platform.services.minigames')));
+
+Route::screen('services/minigames/types/{option}', MinigameTypesScreen::class)->name('platform.services.minigames.types')
+    ->breadcrumbs(fn (Trail $trail, $option) => $trail
+        ->parent('platform.services.minigames')
+        ->push($option->name . ' ' . __('Types/Q-tys'), route('platform.services.minigames.types', $option->id)));
 
 Route::screen('home', HomeScreen::class)
     ->name('platform.home')

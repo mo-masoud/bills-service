@@ -65,12 +65,13 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.layers')
                 ->route('platform.services.fortis-colosseum'),
 
-            Menu::make(__('Quests'))
-                ->icon('bs.layers')
-                ->route('platform.services.fire-cape'),
+            // Menu::make(__('Quests'))
+            //     ->icon('bs.layers')
+            //     ->route('platform.services.fire-cape'),
+
             Menu::make(__('Minigames'))
                 ->icon('bs.layers')
-                ->route('platform.services.fire-cape'),
+                ->route('platform.services.minigames'),
 
             Menu::make(__('Raids'))
                 ->icon('bs.layers')
