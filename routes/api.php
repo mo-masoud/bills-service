@@ -7,6 +7,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlaceOrdersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,9 @@ Route::group(['prefix' => 'games'], function () {
     Route::get('/{game}/quests', [GamesController::class, 'quests']);
     Route::get('/{game}/services', [GamesController::class, 'services']);
 });
+
+Route::get('services', [ServiceController::class, 'index']);
+Route::get('services/{service}', [ServiceController::class, 'show']);
 
 Route::post('validate-coupon-code', [PlaceOrdersController::class, 'validateCouponCode']);
 
