@@ -136,13 +136,14 @@ class GameFormScreen extends Screen
             'game.powerlevel.description' => 'required|string',
             'game.powerlevel.image' => 'required|string',
             'game.powerlevel.levels' => 'required|numeric|min:1',
-            'game.powerlevel.price' => 'required|numeric|min:0',
         ]);
 
         if (!$this->game->exists) {
             Toast::error('You must create your game first');
             return redirect()->back();
         }
+
+        $data['game']['powerlevel']['price'] = 0;
 
         $this->game->powerlevel()->updateOrCreate([
             'game_id' => $this->game->id,

@@ -65,6 +65,7 @@ class HomeScreen extends Screen
             'home.title' => 'required|string|max:255',
             'home.body' => 'required|string',
             'home.video' => 'required|string|url',
+            'home.gold_per_usd' => 'required|numeric|min:0',
         ]);
 
 

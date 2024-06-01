@@ -41,6 +41,13 @@ class HomeLayout extends Rows
                 ->horizontal()
                 ->placeholder('Enter video url for home page')
                 ->help('URL is better for saving server storage'),
+
+            Input::make('home.gold_per_usd', 'Gold per USD')
+                ->title('Gold per USD')
+                ->required()
+                ->horizontal()
+                ->placeholder('Enter gold per USD')
+                ->help('Enter the current gold price per USD'),
         ];
     }
 }

@@ -70,8 +70,12 @@ class SkillsScreen extends Screen
         return [
             Layout::table('skills', [
                 TD::make('name'),
-                TD::make('game')->render(fn($skill) => Link::make($skill->game?->name)->route('platform.games.view', $skill->game)),
-                TD::make('section')->render(fn($skill) => $skill->section ? Link::make($skill->section->name)->route('platform.games.edit', $skill->game) : '-'),
+                TD::make('game')->render(fn ($skill) => Link::make($skill->game?->name)->route('platform.games.view', $skill->game)),
+                TD::make('gpxp_1_40', 'GP/XP 1-40'),
+                TD::make('gpxp_41_60', 'GP/XP 41-60'),
+                TD::make('gpxp_61_90', 'GP/XP 61-90'),
+                TD::make('gpxp_91_99', 'GP/XP 91-99'),
+                TD::make('section')->render(fn ($skill) => $skill->section ? Link::make($skill->section->name)->route('platform.games.edit', $skill->game) : '-'),
                 TD::make('Actions')
                     ->alignRight()
                     ->cantHide()
@@ -106,18 +110,29 @@ class SkillsScreen extends Screen
                     ->title('Section')
                     ->fromModel(SkillSection::class, 'name'),
 
-                Matrix::make('skill.prices')->columns(['min_level', 'max_level', 'price'])->fields([
-                    'min_level' => Input::make('skill.prices.min_level')
-                        ->type('number')
-                        ->min(0)->required(),
-                    'max_level' => Input::make('skill.prices.max_level')
-                        ->type('number')
-                        ->min(0)->required(),
-                    'price' => Input::make('skill.prices.price')
-                        ->type('number')
-                        ->step(0.1)
-                        ->min(0)->required(),
-                ])->title('Skill Prices'),
+                Input::make('skill.gpxp_1_40')
+                    ->title('GP/XP from 1-40')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
+
+                Input::make('skill.gpxp_41_60')
+                    ->title('GP/XP from 41-60')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
+
+                Input::make('skill.gpxp_61_90')
+                    ->title('GP/XP from 61-90')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
+
+                Input::make('skill.gpxp_91_99')
+                    ->title('GP/XP from 91-99')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
 
                 Matrix::make('skill.boot_methods')->columns(['name', 'price'])->fields([
                     'name' => Input::make('skill.boot_methods.name')
@@ -144,18 +159,30 @@ class SkillsScreen extends Screen
                 Relation::make('skill.section_id')
                     ->title('Section')
                     ->fromModel(SkillSection::class, 'name'),
-                Matrix::make('skill.prices')->columns(['min_level', 'max_level', 'price'])->fields([
-                    'min_level' => Input::make('skill.prices.min_level')
-                        ->type('number')
-                        ->min(0)->required(),
-                    'max_level' => Input::make('skill.prices.max_level')
-                        ->type('number')
-                        ->min(0)->required(),
-                    'price' => Input::make('skill.prices.price')
-                        ->type('number')
-                        ->step(0.1)
-                        ->min(0)->required(),
-                ])->title('Skill Prices'),
+
+                Input::make('skill.gpxp_1_40')
+                    ->title('GP/XP from 1-40')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
+
+                Input::make('skill.gpxp_41_60')
+                    ->title('GP/XP from 41-60')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
+
+                Input::make('skill.gpxp_61_90')
+                    ->title('GP/XP from 61-90')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
+
+                Input::make('skill.gpxp_91_99')
+                    ->title('GP/XP from 91-99')
+                    ->type('number')
+                    ->step(0.1)
+                    ->min(0),
 
                 Matrix::make('skill.bootMethods')->columns(['name', 'price'])->fields([
                     'name' => Input::make('skill.bootMethods.name')
@@ -184,11 +211,11 @@ class SkillsScreen extends Screen
         $data = $request->validate([
             'skill.game_id' => 'required|numeric|exists:games,id',
             'skill.name' => 'required|string|max:191',
+            'skill.gpxp_1_40' => 'required|numeric|min:0',
+            'skill.gpxp_41_60' => 'required|numeric|min:0',
+            'skill.gpxp_61_90' => 'required|numeric|min:0',
+            'skill.gpxp_91_99' => 'required|numeric|min:0',
             'skill.section_id' => 'nullable|numeric|exists:skill_sections,id',
-            'skill.prices' => 'nullable|array',
-            'skill.prices.*.min_level' => 'required|numeric|min:0',
-            'skill.prices.*.max_level' => 'required|numeric|min:0',
-            'skill.prices.*.price' => 'required|numeric|min:0',
             'skill.bootMethods' => 'nullable|array',
             'skill.bootMethods.*.name' => 'required|string',
             'skill.bootMethods.*.price' => 'required|numeric|min:0',
@@ -199,29 +226,19 @@ class SkillsScreen extends Screen
 
         $skill->update($data['skill']);
 
-        $skill->prices()->delete();
+        if (isset($data['skill']['boot_methods'])) {
+            $bootMethods = [];
 
-        foreach ($data['skill']['prices'] as $price) {
-            $skill->prices()->updateOrCreate([
-                'min_level' => $price['min_level'],
-                'max_level' => $price['max_level'],
-            ], [
-                'min_level' => $price['min_level'],
-                'max_level' => $price['max_level'],
-                'price' => $price['price'],
-            ]);
+            foreach ($data['skill']['bootMethods'] as $bootMethod) {
+                $bootMethods[] = $bootMethod['name'];
+                $skill->bootMethods()->updateOrCreate(['name' => $bootMethod['name']], [
+                    'name' => $bootMethod['name'],
+                    'price' => $bootMethod['price'],
+                ]);
+            }
+
+            $skill->bootMethods()->whereNotIn('name', $bootMethods)->delete();
         }
-
-        $bootMethods = [];
-        foreach ($data['skill']['bootMethods'] as $bootMethod) {
-            $bootMethods[] = $bootMethod['name'];
-            $skill->bootMethods()->updateOrCreate(['name' => $bootMethod['name']], [
-                'name' => $bootMethod['name'],
-                'price' => $bootMethod['price'],
-            ]);
-        }
-
-        $skill->bootMethods()->whereNotIn('name', $bootMethods)->delete();
 
         Toast::success("Skill was updated successfully.");
     }
@@ -238,11 +255,11 @@ class SkillsScreen extends Screen
         $data = $request->validate([
             'skill.game_id' => 'required|numeric|exists:games,id',
             'skill.name' => 'required|string|max:191',
+            'skill.gpxp_1_40' => 'required|numeric|min:0',
+            'skill.gpxp_41_60' => 'required|numeric|min:0',
+            'skill.gpxp_61_90' => 'required|numeric|min:0',
+            'skill.gpxp_91_99' => 'required|numeric|min:0',
             'skill.section_id' => 'nullable|numeric|exists:skill_sections,id',
-            'skill.prices' => 'nullable|array',
-            'skill.prices.*.min_level' => 'required|numeric|min:0',
-            'skill.prices.*.max_level' => 'required|numeric|min:0',
-            'skill.prices.*.price' => 'required|numeric|min:0',
             'skill.boot_methods' => 'nullable|array',
             'skill.boot_methods.*.name' => 'required|string',
             'skill.boot_methods.*.price' => 'required|numeric|min:0',
@@ -251,20 +268,15 @@ class SkillsScreen extends Screen
 
         $skill = Skill::create($data['skill']);
 
-        foreach ($data['skill']['prices'] as $price) {
-            $skill->prices()->create([
-                'min_level' => $price['min_level'],
-                'max_level' => $price['max_level'],
-                'price' => $price['price'],
-            ]);
+        if (isset($data['skill']['boot_methods'])) {
+            foreach ($data['skill']['boot_methods'] as $bootMethod) {
+                $skill->bootMethods()->create([
+                    'name' => $bootMethod['name'],
+                    'price' => $bootMethod['price'],
+                ]);
+            }
         }
 
-        foreach ($data['skill']['boot_methods'] as $bootMethod) {
-            $skill->bootMethods()->create([
-                'name' => $bootMethod['name'],
-                'price' => $bootMethod['price'],
-            ]);
-        }
 
         Toast::success("Skill {$skill->name} was created successfully.");
     }

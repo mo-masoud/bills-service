@@ -8,6 +8,10 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlaceOrdersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
+use App\Models\BootMethod;
+use App\Models\HomeContent;
+use App\Models\PointsPerLevel;
+use App\Models\Skill;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,6 +49,8 @@ Route::group(['prefix' => 'games'], function () {
     Route::get('/{game}/quests', [GamesController::class, 'quests']);
     Route::get('/{game}/services', [GamesController::class, 'services']);
 });
+
+Route::get('calculate-price', [GamesController::class, 'calculateSkillPrice']);
 
 Route::get('services', [ServiceController::class, 'index']);
 Route::get('services/{service}', [ServiceController::class, 'show']);

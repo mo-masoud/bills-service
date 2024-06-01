@@ -13,4 +13,9 @@ class PointsPerLevel extends Model
         'level',
         'points',
     ];
+
+    public static function getPoints($minLevel, $maxLevel)
+    {
+        return self::where('level', '>', $minLevel)->where('level', '<=', $maxLevel)->sum('points');
+    }
 }

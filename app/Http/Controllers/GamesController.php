@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\GameResource;
 use App\Models\Game;
+use App\Models\PointsPerLevel;
+use App\Services\CalculatorService;
 use Illuminate\Http\JsonResponse;
 
 class GamesController extends Controller
@@ -27,7 +29,7 @@ class GamesController extends Controller
     public function quests(Game $game): JsonResponse
     {
         $quests = $game->quests()
-            ->when(request('search'), fn($q) => $q->where('name', 'like', '%'.request('search').'%'))
+            ->when(request('search'), fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'))
             ->paginate();
         return response()->json($quests);
     }
@@ -35,5 +37,19 @@ class GamesController extends Controller
     public function services(Game $game): JsonResponse
     {
         return response()->json($game->services);
+    }
+
+    public function calculateSkillPrice()
+    {
+        $data = CalculatorService::calculate(
+            request('skill_id'),
+            request('boost_method_id'),
+            request('min_level'),
+            request('max_level'),
+            request('express'),
+            request('quantity')
+        );
+
+        return response()->json($data);
     }
 }

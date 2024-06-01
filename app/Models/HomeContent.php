@@ -10,6 +10,6 @@ class HomeContent extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'body', 'video'
+        'title', 'body', 'video', 'gold_per_usd'
     ];
 }
