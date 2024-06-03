@@ -9,6 +9,7 @@ use App\Orchid\Screens\Game\GameViewScreen;
 use App\Orchid\Screens\Home\HomeScreen;
 use App\Orchid\Screens\Orders\OrdersScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\QuestsScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\Services\FireCapeBuildsScreen;
@@ -120,6 +121,12 @@ Route::screen('skills', SkillsScreen::class)->name('platform.skills')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Skills'), route('platform.skills')));
+
+
+Route::screen('quests', QuestsScreen::class)->name('platform.quests')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Quests'), route('platform.quests')));
 
 Route::screen('services/fire-cape', FireCapeScreen::class)->name('platform.services.fire-cape')
     ->breadcrumbs(fn (Trail $trail) => $trail

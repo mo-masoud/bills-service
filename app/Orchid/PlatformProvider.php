@@ -49,7 +49,12 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make(__('Skills'))
                 ->icon('bs.heart')
                 ->route('platform.skills')
-                ->permission('platform.skills')
+                ->permission('platform.skills'),
+
+            Menu::make(__('Quests'))
+                ->icon('bs.heart')
+                ->route('platform.quests')
+                ->permission('platform.games')
                 ->divider(),
 
             Menu::make(__('Fire Cape'))

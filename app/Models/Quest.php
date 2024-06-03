@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Orchid\Screen\AsSource;
 
 class Quest extends Model
 {
-    use HasFactory;
+    use HasFactory, AsSource;
 
     protected $fillable = [
         'game_id', // <-- This is the foreign key
         'name',
-        'difficulty',
-        'price',
+        'easy_price',
+        'medium_price',
+        'hard_price',
     ];
 
     public function game(): BelongsTo
