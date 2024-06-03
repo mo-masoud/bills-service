@@ -20,6 +20,7 @@ use App\Orchid\Screens\Services\InfernalCapeMagicsScreen;
 use App\Orchid\Screens\Services\InfernalCapeScreen;
 use App\Orchid\Screens\Services\MinigameScreen;
 use App\Orchid\Screens\Services\MinigameTypesScreen;
+use App\Orchid\Screens\Services\RaidsScreen;
 use App\Orchid\Screens\Skills\SkillsScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
@@ -167,6 +168,12 @@ Route::screen('services/minigames/types/{option}', MinigameTypesScreen::class)->
     ->breadcrumbs(fn (Trail $trail, $option) => $trail
         ->parent('platform.services.minigames')
         ->push($option->name . ' ' . __('Types/Q-tys'), route('platform.services.minigames.types', $option->id)));
+
+
+Route::screen('services/raids', RaidsScreen::class)->name('platform.services.raids')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Raids'), route('platform.services.raids')));
 
 Route::screen('home', HomeScreen::class)
     ->name('platform.home')

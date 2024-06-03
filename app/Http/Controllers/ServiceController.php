@@ -51,7 +51,7 @@ class ServiceController extends Controller
 
     public function show($service)
     {
-        if ($service === 'fire-cape' || $service === 'fortis-colosseum' || $service === 'infernal-cape') {
+        if ($service === 'fire-cape' || $service === 'fortis-colosseum' || $service === 'infernal-cape' || $service === 'raids') {
             $options = ServiceOption::with('children.children')
                 ->whereNull('parent_id')
                 ->where('service', $service)

@@ -80,7 +80,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Raids'))
                 ->icon('bs.layers')
-                ->route('platform.services.fire-cape'),
+                ->route('platform.services.raids'),
 
             Menu::make(__('PvM | Bossing'))
                 ->icon('bs.layers')
