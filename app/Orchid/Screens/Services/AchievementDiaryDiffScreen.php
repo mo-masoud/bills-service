@@ -170,16 +170,18 @@ class AchievementDiaryDiffScreen extends Screen
             'price' => $request->get('price'),
         ]);
 
-        $service->children()->delete();
+        if ($request->has('createOptions')) {
+            $service->children()->delete();
 
-        foreach ($request->get('updateOptions') as $op) {
-            $service->children()->updateOrCreate([
-                'name' => $op['name'],
-            ], [
-                'price' => $op['price'],
-                'service' => 'achievement-diary',
-                'type' => 'checkbox'
-            ]);
+            foreach ($request->get('updateOptions') as $op) {
+                $service->children()->updateOrCreate([
+                    'name' => $op['name'],
+                ], [
+                    'price' => $op['price'],
+                    'service' => 'achievement-diary',
+                    'type' => 'checkbox'
+                ]);
+            }
         }
 
         if ($request->has('express_price')) {
@@ -213,15 +215,16 @@ class AchievementDiaryDiffScreen extends Screen
             'parent_id' => $option->id,
         ]);
 
-        foreach ($request->get('createOptions') as $op) {
-            $service->children()->create([
-                'name' => $op['name'],
-                'price' => $op['price'],
-                'service' => 'achievement-diary',
-                'type' => 'checkbox'
-            ]);
+        if ($request->has('createOptions')) {
+            foreach ($request->get('createOptions') as $op) {
+                $service->children()->create([
+                    'name' => $op['name'],
+                    'price' => $op['price'],
+                    'service' => 'achievement-diary',
+                    'type' => 'checkbox'
+                ]);
+            }
         }
-
 
         if ($request->has('express_price')) {
             $service->children()->updateOrCreate([
