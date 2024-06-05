@@ -160,7 +160,7 @@ class AchievementDiaryDiffScreen extends Screen
             'name' => 'required|string',
             'price' => 'required|numeric',
             'express_price' => 'nullable|numeric',
-            'updateOptions' => 'required|array',
+            'updateOptions' => 'nullable|array',
             'updateOptions.*.name' => 'required|string',
             'updateOptions.*.price' => 'required|numeric',
         ]);
@@ -201,7 +201,7 @@ class AchievementDiaryDiffScreen extends Screen
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
-            'createOptions' => 'required|array',
+            'createOptions' => 'nullable|array',
             'createOptions.*.name' => 'required|string',
             'createOptions.*.price' => 'required|numeric',
         ]);
