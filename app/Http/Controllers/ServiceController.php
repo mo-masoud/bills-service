@@ -51,36 +51,6 @@ class ServiceController extends Controller
 
     public function show($service)
     {
-        if ($service === 'fire-cape' || $service === 'fortis-colosseum' || $service === 'infernal-cape' || $service === 'raids') {
-            $options = ServiceOption::with('children.children')
-                ->whereNull('parent_id')
-                ->where('service', $service)
-                ->get()
-                ->map(function ($option) {
-                    return [
-                        'id' => $option->id,
-                        'name' => $option->name,
-                        'children' => $option->children->map(function ($child) {
-                            return [
-                                'id' => $child->id,
-                                'name' => $child->name,
-                                'price' => $child->price,
-                                'type' => $child->type,
-                                'children' => $child->children->map(function ($child) {
-                                    return [
-                                        'id' => $child->id,
-                                        'name' => $child->name,
-                                        'price' => $child->price,
-                                        'type' => $child->type,
-                                    ];
-                                }),
-                            ];
-                        }),
-                    ];
-                });
-
-            return response()->json($options);
-        }
 
         if ($service === 'minigames') {
             $options = ServiceOption::with('children.children.children')
@@ -121,6 +91,33 @@ class ServiceController extends Controller
             return response()->json($options);
         }
 
-        return response()->json([]);
+        $options = ServiceOption::with('children.children')
+            ->whereNull('parent_id')
+            ->where('service', $service)
+            ->get()
+            ->map(function ($option) {
+                return [
+                    'id' => $option->id,
+                    'name' => $option->name,
+                    'children' => $option->children->map(function ($child) {
+                        return [
+                            'id' => $child->id,
+                            'name' => $child->name,
+                            'price' => $child->price,
+                            'type' => $child->type,
+                            'children' => $child->children->map(function ($child) {
+                                return [
+                                    'id' => $child->id,
+                                    'name' => $child->name,
+                                    'price' => $child->price,
+                                    'type' => $child->type,
+                                ];
+                            }),
+                        ];
+                    }),
+                ];
+            });
+
+        return response()->json($options);
     }
 }

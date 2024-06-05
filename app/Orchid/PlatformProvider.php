@@ -84,7 +84,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('PvM | Bossing'))
                 ->icon('bs.layers')
-                ->route('platform.services.fire-cape'),
+                ->route('platform.services.pvm-bossing'),
 
             Menu::make(__('Combat Achievements'))
                 ->icon('bs.layers')

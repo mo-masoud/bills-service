@@ -12,6 +12,7 @@ use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\QuestsScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\Services\BossingScreen;
 use App\Orchid\Screens\Services\FireCapeBuildsScreen;
 use App\Orchid\Screens\Services\FireCapeScreen;
 use App\Orchid\Screens\Services\FortisColosseumScreen;
@@ -174,6 +175,11 @@ Route::screen('services/raids', RaidsScreen::class)->name('platform.services.rai
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Raids'), route('platform.services.raids')));
+
+Route::screen('services/pvm-bossing', BossingScreen::class)->name('platform.services.pvm-bossing')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('PvM | Bossing'), route('platform.services.pvm-bossing')));
 
 Route::screen('home', HomeScreen::class)
     ->name('platform.home')
