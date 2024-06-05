@@ -12,13 +12,19 @@ use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\QuestsScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\Services\AchievementDiaryDiffScreen;
+use App\Orchid\Screens\Services\AchievementDiaryScreen;
 use App\Orchid\Screens\Services\BossingScreen;
+use App\Orchid\Screens\Services\CombatAchievementsMonstersScreen;
+use App\Orchid\Screens\Services\CombatAchievementsScreen;
 use App\Orchid\Screens\Services\FireCapeBuildsScreen;
 use App\Orchid\Screens\Services\FireCapeScreen;
 use App\Orchid\Screens\Services\FortisColosseumScreen;
 use App\Orchid\Screens\Services\FortisColosseumServicesScreen;
 use App\Orchid\Screens\Services\InfernalCapeMagicsScreen;
 use App\Orchid\Screens\Services\InfernalCapeScreen;
+use App\Orchid\Screens\Services\IronmanCollectingResourcesScreen;
+use App\Orchid\Screens\Services\IronmanCollectingScreen;
 use App\Orchid\Screens\Services\MinigameScreen;
 use App\Orchid\Screens\Services\MinigameTypesScreen;
 use App\Orchid\Screens\Services\RaidsScreen;
@@ -180,6 +186,36 @@ Route::screen('services/pvm-bossing', BossingScreen::class)->name('platform.serv
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('PvM | Bossing'), route('platform.services.pvm-bossing')));
+
+Route::screen('services/combat-achievements', CombatAchievementsScreen::class)->name('platform.services.combat-achievements')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Combat Achievements / Difficulties'), route('platform.services.combat-achievements')));
+
+Route::screen('services/combat-achievements/{option}', CombatAchievementsMonstersScreen::class)->name('platform.services.combat-achievements.monsters')
+    ->breadcrumbs(fn (Trail $trail, $option) => $trail
+        ->parent('platform.services.combat-achievements')
+        ->push($option->name . ' / ' . __('Monsters / Games'), route('platform.services.combat-achievements.monsters', $option->id)));
+
+Route::screen('services/achievement-diary', AchievementDiaryScreen::class)->name('platform.services.achievement-diary')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Combat Achievements / Difficulties'), route('platform.services.achievement-diary')));
+
+Route::screen('services/achievement-diary/{option}', AchievementDiaryDiffScreen::class)->name('platform.services.achievement-diary.difficulties')
+    ->breadcrumbs(fn (Trail $trail, $option) => $trail
+        ->parent('platform.services.achievement-diary')
+        ->push($option->name . ' / ' . __('Difficulties'), route('platform.services.achievement-diary.difficulties', $option->id)));
+
+Route::screen('services/ironman-collecting', IronmanCollectingScreen::class)->name('platform.services.ironman-collecting')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Ironman Collecting / Types'), route('platform.services.ironman-collecting')));
+
+Route::screen('services/ironman-collecting/{option}', IronmanCollectingResourcesScreen::class)->name('platform.services.ironman-collecting.resources')
+    ->breadcrumbs(fn (Trail $trail, $option) => $trail
+        ->parent('platform.services.ironman-collecting')
+        ->push($option->name . ' / ' . __('Resources'), route('platform.services.ironman-collecting.resources', $option->id)));
 
 Route::screen('home', HomeScreen::class)
     ->name('platform.home')

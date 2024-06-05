@@ -88,16 +88,16 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Combat Achievements'))
                 ->icon('bs.layers')
-                ->route('platform.services.fire-cape'),
+                ->route('platform.services.combat-achievements'),
 
             Menu::make(__('Achievement Diary'))
                 ->icon('bs.layers')
-                ->route('platform.services.fire-cape'),
+                ->route('platform.services.achievement-diary'),
 
             Menu::make(__('Ironman Collecting'))
                 ->icon('bs.layers')
                 ->divider()
-                ->route('platform.services.fire-cape'),
+                ->route('platform.services.ironman-collecting'),
 
             Menu::make(__('Users'))
                 ->icon('bs.people')
