@@ -66,9 +66,8 @@ class QuestsScreen extends Screen
             Layout::table('quests', [
                 TD::make('name'),
                 TD::make('game')->render(fn ($quest) => Link::make($quest->game?->name)->route('platform.games.view', $quest->game)),
-                TD::make('easy_price'),
-                TD::make('medium_price'),
-                TD::make('hard_price'),
+                TD::make('price'),
+                TD::make('difficulty'),
                 TD::make('Actions')
                     ->alignRight()
                     ->cantHide()
@@ -102,22 +101,15 @@ class QuestsScreen extends Screen
                     ->type('text')
                     ->required(),
 
-                Input::make('quest.easy_price')
-                    ->title('Easy Price')
+                Input::make('quest.price')
+                    ->title('Price')
                     ->type('number')
                     ->step('0.01')
                     ->required(),
 
-                Input::make('quest.medium_price')
-                    ->title('Medium Price')
-                    ->type('number')
-                    ->step('0.01')
-                    ->required(),
-
-                Input::make('quest.hard_price')
-                    ->title('Hard Price')
-                    ->type('number')
-                    ->step('0.01')
+                Input::make('quest.difficulty')
+                    ->title('Difficulty')
+                    ->type('text')
                     ->required(),
             ]))
                 ->title('Create Quest')
@@ -128,28 +120,23 @@ class QuestsScreen extends Screen
                     ->required()
                     ->title('Game')
                     ->fromModel(Game::class, 'name'),
+
                 Input::make('quest.name')
                     ->title('Name')
                     ->type('text')
                     ->required(),
 
-                Input::make('quest.easy_price')
-                    ->title('Easy Price')
+                Input::make('quest.price')
+                    ->title('Price')
                     ->type('number')
                     ->step('0.01')
                     ->required(),
 
-                Input::make('quest.medium_price')
-                    ->title('Medium Price')
-                    ->type('number')
-                    ->step('0.01')
+                Input::make('quest.difficulty')
+                    ->title('Difficulty')
+                    ->type('text')
                     ->required(),
 
-                Input::make('quest.hard_price')
-                    ->title('Hard Price')
-                    ->type('number')
-                    ->step('0.01')
-                    ->required(),
             ]))->async('asyncLoadQuest')
                 ->applyButton('Update'),
         ];
@@ -169,9 +156,8 @@ class QuestsScreen extends Screen
         $request->validate([
             'quest.game_id' => 'required|exists:games,id',
             'quest.name' => 'required|string',
-            'quest.easy_price' => 'required|numeric',
-            'quest.medium_price' => 'required|numeric',
-            'quest.hard_price' => 'required|numeric',
+            'quest.price' => 'required|numeric',
+            'quest.difficulty' => 'required|string',
         ]);
 
         Quest::create($request->get('quest'));
@@ -185,9 +171,8 @@ class QuestsScreen extends Screen
         $request->validate([
             'quest.game_id' => 'required|exists:games,id',
             'quest.name' => 'required|string',
-            'quest.easy_price' => 'required|numeric',
-            'quest.medium_price' => 'required|numeric',
-            'quest.hard_price' => 'required|numeric',
+            'quest.price' => 'required|numeric',
+            'quest.difficulty' => 'required|string',
         ]);
 
         $quest = Quest::findOrFail($request->get('id'));

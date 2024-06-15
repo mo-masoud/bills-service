@@ -14,9 +14,8 @@ class Quest extends Model
     protected $fillable = [
         'game_id', // <-- This is the foreign key
         'name',
-        'easy_price',
-        'medium_price',
-        'hard_price',
+        'price',
+        'difficulty'
     ];
 
     public function game(): BelongsTo
