@@ -10,25 +10,26 @@ class ServiceOrderItem extends Model
 {
     use HasFactory;
 
+    protected $table = 'order_service_items';
+
     protected $fillable = [
-        'service_id',
+        'service_option_id',
         'order_id',
-        'game_id',
+        'checkboxes',
         'price',
+    ];
+
+    protected $casts = [
+        'checkboxes' => 'array',
     ];
 
     public function service(): BelongsTo
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(ServiceOption::class, 'service_option_id');
     }
 
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
-    }
-
-    public function game(): BelongsTo
-    {
-        return $this->belongsTo(Game::class);
     }
 }

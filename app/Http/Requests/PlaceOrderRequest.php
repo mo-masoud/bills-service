@@ -17,14 +17,14 @@ class PlaceOrderRequest extends FormRequest
         return [
             'items' => 'required|array|min:1',
             'coupon' => 'nullable|string',
-            'items.*.type' => 'required|string|in:powerlevel,quest,service',
-            'items.*.game_id' => 'required|numeric|exists:games,id',
-            'items.*.skill_id' => 'required_if:items.*.type,==,powerlevel|numeric|exists:skills,id',
-            'items.*.current_level' => 'required_if:items.*.type,==,powerlevel|numeric|min:1',
-            'items.*.desired_level' => 'required_if:items.*.type,==,powerlevel|numeric|min:1',
-            'items.*.boost_method_id' => 'required_if:items.*.type,==,powerlevel|numeric|exists:boot_methods,id',
+            'items.*.type' => 'required|string|in:skill,quest,service',
+            'items.*.skill_id' => 'required_if:items.*.type,==,skill|numeric|exists:skills,id',
+            'items.*.min_level' => 'required_if:items.*.type,==,skill|numeric|min:1',
+            'items.*.max_level' => 'required_if:items.*.type,==,skill|numeric|min:1',
+            'items.*.boost_method_id' => 'nullable:numeric|exists:boot_methods,id',
             'items.*.quest_id' => 'required_if:items.*.type,==,quest|numeric|exists:quests,id',
-            'items.*.service_id' => 'required_if:items.*.type,==,service|numeric|exists:services,id',
+            'items.*.service_id' => 'required_if:items.*.type,==,service|numeric|exists:service_options,id',
+            'items.*.checkboxes' => 'nullable|array',
         ];
     }
 }

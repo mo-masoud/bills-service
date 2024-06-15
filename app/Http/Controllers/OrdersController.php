@@ -14,7 +14,6 @@ class OrdersController extends Controller
             OrderResource::collection(
                 $request->user()
                     ->orders()
-                    ->with('powerlevelItems')
                     ->get()
             )
         );

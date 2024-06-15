@@ -28,6 +28,18 @@ class ServiceOption extends Model
         return $this->hasMany(ServiceOption::class, 'parent_id');
     }
 
+    public function allParents()
+    {
+        $parents = collect();
+        $parent = $this->parent;
+        while ($parent) {
+            $parents->push($parent);
+            $parent = $parent->parent;
+        }
+
+        return $parents;
+    }
+
     public function isRadio()
     {
         return $this->type === 'radio';

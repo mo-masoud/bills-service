@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ServiceOption;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,27 +30,26 @@ class OrderResource extends JsonResource
     protected function transformItems(): array
     {
         $items = [];
-        foreach ($this->powerlevelItems as $item) {
+        foreach ($this->skillItems as $item) {
             $items[] = [
-                'game' => new BasicGameResource($item->game),
                 'skill' => [
                     'id' => $item->skill_id,
                     'name' => $item->skill->name ?? null,
                 ],
                 'boost_method' => [
-                    'id' => $item->boot_method_id,
-                    'name' => $item->bootMethod->name ?? null,
+                    'id' => $item->boostMethod->id ?? null,
+                    'name' => $item->boostMethod->name ?? null,
                 ],
-                'current_level' => $item->current_level,
-                'desired_level' => $item->desired_level,
+                'min_level' => $item->min_level,
+                'max_level' => $item->max_level,
                 'price' => $item->price,
-                'type' => 'powerlevel'
+                'express' => (bool) $item->express,
+                'type' => 'skill'
             ];
         }
 
         foreach ($this->questItems as $item) {
             $items[] = [
-                'game' => new BasicGameResource($item->game),
                 'quest' => [
                     'id' => $item->quest_id,
                     'name' => $item->quest->name ?? null,
@@ -62,10 +62,23 @@ class OrderResource extends JsonResource
 
         foreach ($this->serviceItems as $item) {
             $items[] = [
-                'game' => new BasicGameResource($item->game),
                 'service' => [
-                    'id' => $item->service_id,
+                    'id' => $item->service_option_id,
                     'name' => $item->service->name ?? null,
+                    'service' => $item->service->service ?? null,
+                    'parent' => $item->service->parent ? [
+                        'id' => $item->service->parent->id,
+                        'name' => $item->service->parent->name,
+                        'price' => $item->service->parent->price,
+                    ] : null,
+                    'price' => $item->service->price ?? null,
+                    'options' => $item->checkboxes ? ServiceOption::whereIn('id', $item->checkboxes)->get()->map(function ($option) {
+                        return [
+                            'id' => $option->id,
+                            'name' => $option->name,
+                            'price' => $option->price,
+                        ];
+                    }) : [],
                 ],
                 'price' => $item->price,
                 'type' => 'service'

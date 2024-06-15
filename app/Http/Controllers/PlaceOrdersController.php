@@ -47,7 +47,7 @@ class PlaceOrdersController extends Controller
         return response()->json([
             'message' => 'Order has been placed successfully',
             'status' => 'success',
-            'order' => new OrderResource($placeOrder['order']),
+            'order' => new OrderResource($placeOrder),
         ], 201);
     }
 }

@@ -23,9 +23,9 @@ class Order extends Model
         'cancellation_reason',
     ];
 
-    public function powerlevelItems(): HasMany
+    public function skillItems(): HasMany
     {
-        return $this->hasMany(OrderPowerLevelItem::class);
+        return $this->hasMany(OrderSkillItem::class);
     }
 
     public function questItems(): HasMany
