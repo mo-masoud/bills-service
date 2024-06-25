@@ -44,7 +44,7 @@ class PlaceOrderService
                 'boost_method_id' => $skill['boost_method_id'],
                 'min_level' => $skill['min_level'],
                 'max_level' => $skill['max_level'],
-                'express' => $skill['express'],
+                'express' => $skill['express'] ?? false,
                 'quantity' => 1,
                 'price' => $price,
             ];
