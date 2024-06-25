@@ -33,7 +33,7 @@ class PlaceOrderService
                 $skill['boost_method_id'],
                 $skill['min_level'],
                 $skill['max_level'],
-                $skill['express'],
+                $skill['express'] ?? false,
                 1
             )['price'];
 
