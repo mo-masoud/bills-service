@@ -19,7 +19,7 @@ class OrdersScreen extends Screen
     {
         return [
             'orders' => Order::with('user')
-                ->withCount('powerlevelItems', 'questItems', 'serviceItems')
+                ->withCount('skillItems', 'questItems', 'serviceItems')
                 ->latest()
                 ->paginate(),
         ];

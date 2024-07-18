@@ -8,6 +8,7 @@ use App\Orchid\Screens\Game\GameListScreen;
 use App\Orchid\Screens\Game\GameViewScreen;
 use App\Orchid\Screens\Home\HomeScreen;
 use App\Orchid\Screens\Orders\OrdersScreen;
+use App\Orchid\Screens\Orders\ViewOrderScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\QuestsScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
@@ -228,6 +229,12 @@ Route::screen('orders', OrdersScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Orders'), route('platform.orders')));
+
+Route::screen('orders/{order}', ViewOrderScreen::class)
+    ->name('platform.orders.view')
+    ->breadcrumbs(fn (Trail $trail, $order) => $trail
+        ->parent('platform.orders')
+        ->push('View Order: #' . $order->id, route('platform.orders.view', $order)));
 
 Route::screen('coupons', CouponsScreen::class)
     ->name('platform.coupons')
