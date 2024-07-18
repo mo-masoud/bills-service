@@ -9,8 +9,7 @@
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="trustpilot-one-time-domain-verification-id" content="2331a472-3937-4fff-88cc-4baba645ede3" />
-    <title>React App</title>
+    <title>Bills Services</title>
     <script type="text/javascript">
         var Tawk_API = Tawk_API || {},
             Tawk_LoadStart = new Date;
@@ -21,8 +20,9 @@
                 .setAttribute("crossorigin", "*"), e.parentNode.insertBefore(t, e)
         }()
     </script>
-    <script defer="defer" src="/static/js/main.d334d4ab.js"></script>
-    <link href="/static/css/main.0f442381.css" rel="stylesheet">
+    <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+    <script defer="defer" src="/static/js/main.9c349bd4.js"></script>
+    <link href="/static/css/main.1cbbbd08.css" rel="stylesheet">
 </head>
 
 <body><noscript>You need to enable JavaScript to run this app.</noscript>

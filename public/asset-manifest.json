@@ -1,28 +1,39 @@
 {
   "files": {
-    "main.css": "/static/css/main.0f442381.css",
-    "main.js": "/static/js/main.d334d4ab.js",
-    "static/js/206.53e87fd9.chunk.js": "/static/js/206.53e87fd9.chunk.js",
+    "main.css": "/static/css/main.1cbbbd08.css",
+    "main.js": "/static/js/main.9c349bd4.js",
+    "static/js/453.1371903c.chunk.js": "/static/js/453.1371903c.chunk.js",
     "static/media/Landing.mp4": "/static/media/Landing.f619302f7daf408fce09.mp4",
     "static/media/DALL·E 2024-02-17 21.00.46 - An anime-style landscape scene, richly infused with elements of Egyptian mythology, horizontally oriented for a panoramic view. At the far left, a cha.webp": "/static/media/DALL·E 2024-02-17 21.00.46 - An anime-style landscape scene, richly infused with elements of Egyptian mythology, horizontally oriented for a panoramic view. At the far left, a cha.68a048ae72b73493a9b0.webp",
     "static/media/footer.mp4": "/static/media/footer.9d6b34527b2ec11914d9.mp4",
-    "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.45a265d0f07b31cde85f.ttf",
+    "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.bacd5de623fb563b961a.ttf",
     "static/media/navheader.png": "/static/media/navheader.8b80be6ce87da44ef2ea.png",
     "static/media/White Navy Pink Glitch Simple 404 Not Found Error T-Shirt (1).png": "/static/media/White Navy Pink Glitch Simple 404 Not Found Error T-Shirt (1).5fa832f89366bf115c85.png",
     "static/media/yaser.mp4": "/static/media/yaser.30078277f089914537f2.mp4",
-    "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.6205fd00fb1b573e9f0f.ttf",
-    "static/media/fa-solid-900.woff2": "/static/media/fa-solid-900.fb8184add5a3101ad0a3.woff2",
-    "static/media/fa-brands-400.woff2": "/static/media/fa-brands-400.8d3cabfc66809162fb4d.woff2",
-    "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.adc51aab4d771ab65f81.ttf",
+    "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.60127e352b7a11f7f1bc.ttf",
+    "static/media/fa-solid-900.woff2": "/static/media/fa-solid-900.4d986b00ff9ca3828fbd.woff2",
+    "static/media/fa-brands-400.woff2": "/static/media/fa-brands-400.455ea818179b4def0c43.woff2",
+    "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.eb91f7b948a42799f678.ttf",
     "static/media/contact.jpg": "/static/media/contact.d7b441f6d9811b5bdd01.jpg",
+    "static/media/mariaa.jpg": "/static/media/mariaa.2c0439646437e1c0dd53.jpg",
     "static/media/logomain.png": "/static/media/logomain.ef8eac4b601669df88bb.png",
-    "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.e931bc0d14f5bbb1da22.woff2",
-    "static/media/fa-v4compatibility.ttf": "/static/media/fa-v4compatibility.2eb7b3ef25042305f3ff.ttf",
-    "static/media/fa-v4compatibility.woff2": "/static/media/fa-v4compatibility.b3049b13a93f07e026fc.woff2",
-    "index.html": "/index.html"
+    "static/media/john.jpg": "/static/media/john.33713813e5b3c0d126ce.jpg",
+    "static/media/marco.jpg": "/static/media/marco.d57f108e5273b81577e7.jpg",
+    "static/media/chris.jpg": "/static/media/chris.c973eda9f0ad6b374ae3.jpg",
+    "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.21cb8f55d8e0c5b89751.woff2",
+    "static/media/fa-v4compatibility.ttf": "/static/media/fa-v4compatibility.c8e090db312b0bea2aa2.ttf",
+    "static/media/fa-v4compatibility.woff2": "/static/media/fa-v4compatibility.cf7f5903d06b79ad60f1.woff2",
+    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/index.html",
+    "main.1cbbbd08.css.map": "/static/css/main.1cbbbd08.css.map",
+    "main.9c349bd4.js.map": "/static/js/main.9c349bd4.js.map",
+    "453.1371903c.chunk.js.map": "/static/js/453.1371903c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0f442381.css",
-    "static/js/main.d334d4ab.js"
+    "static/css/main.1cbbbd08.css",
+    "static/js/main.9c349bd4.js"
   ]
 }
