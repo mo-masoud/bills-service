@@ -29,6 +29,7 @@ use App\Orchid\Screens\Services\IronmanCollectingScreen;
 use App\Orchid\Screens\Services\MinigameScreen;
 use App\Orchid\Screens\Services\MinigameTypesScreen;
 use App\Orchid\Screens\Services\RaidsScreen;
+use App\Orchid\Screens\Skills\BoostMethodsScreen;
 use App\Orchid\Screens\Skills\SkillsScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
@@ -130,6 +131,12 @@ Route::screen('skills', SkillsScreen::class)->name('platform.skills')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Skills'), route('platform.skills')));
+
+Route::screen('skills/{skill}/boost-methods', BoostMethodsScreen::class)
+    ->name('platform.skills.boost-methods')
+    ->breadcrumbs(fn (Trail $trail, $skill) => $trail
+        ->parent('platform.skills')
+        ->push($skill->name . ' Boost Methods', route('platform.skills.boost-methods', $skill)));
 
 
 Route::screen('quests', QuestsScreen::class)->name('platform.quests')
