@@ -78,7 +78,7 @@ class SkillsScreen extends Screen
                     ->render(function (Skill $skill) {
                         return Group::make([
                             Link::make('Calculator')
-                                ->route('platform.skills')
+                                ->route('platform.skills.calculator', $skill)
                                 ->icon('calculator-alt'),
 
                             Link::make('Boost Methods')

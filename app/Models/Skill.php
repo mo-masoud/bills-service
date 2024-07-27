@@ -36,4 +36,9 @@ class Skill extends Model
     {
         return $this->hasMany(BootMethod::class);
     }
+
+    public function skillRanges(): HasMany
+    {
+        return $this->hasMany(SkillRange::class);
+    }
 }

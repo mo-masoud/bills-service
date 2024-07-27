@@ -30,6 +30,7 @@ use App\Orchid\Screens\Services\MinigameScreen;
 use App\Orchid\Screens\Services\MinigameTypesScreen;
 use App\Orchid\Screens\Services\RaidsScreen;
 use App\Orchid\Screens\Skills\BoostMethodsScreen;
+use App\Orchid\Screens\Skills\SkillRangesScreen;
 use App\Orchid\Screens\Skills\SkillsScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
@@ -137,6 +138,12 @@ Route::screen('skills/{skill}/boost-methods', BoostMethodsScreen::class)
     ->breadcrumbs(fn (Trail $trail, $skill) => $trail
         ->parent('platform.skills')
         ->push($skill->name . ' Boost Methods', route('platform.skills.boost-methods', $skill)));
+
+Route::screen('skills/{skill}/calculator', SkillRangesScreen::class)
+    ->name('platform.skills.calculator')
+    ->breadcrumbs(fn (Trail $trail, $skill) => $trail
+        ->parent('platform.skills')
+        ->push($skill->name . ' Calculator', route('platform.skills.calculator', $skill)));
 
 
 Route::screen('quests', QuestsScreen::class)->name('platform.quests')

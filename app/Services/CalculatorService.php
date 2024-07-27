@@ -18,18 +18,17 @@ class CalculatorService
 
     public static function calculate($skillId, $boostMethodId, $minLevel, $maxLevel, $express, $quantity = 1)
     {
-        $skill = Skill::findOrFail($skillId);
+        $skill = Skill::with('skillRanges')->findOrFail($skillId);
         $boostMethod = BootMethod::find($boostMethodId);
 
         $homeContent = HomeContent::first();
 
         // Define the level ranges and their corresponding XP tables
-        $xpTables = [
-            'gpxp_1_40' => range(1, 40),
-            'gpxp_41_60' => range(40, 60),
-            'gpxp_61_90' => range(60, 90),
-            'gpxp_91_99' => range(90, 99),
-        ];
+
+        $xpTables = [];
+        foreach ($skill->skillRanges as $range) {
+            $xpTables['gpxp_' . $range->min . '_' . $range->max] = range($range->min == 1 ? $range->min : $range->min - 1, $range->max);
+        }
 
         // Initialize an array to hold the tables that fall within the given range
         $selectedTables = [];
@@ -49,9 +48,28 @@ class CalculatorService
                 $max = min([$maxLevel, last($range)]);
 
                 $points = PointsPerLevel::getPoints($min, $max);
+
+                preg_match_all('/\d+/', $table, $matches);
+
+                $minRange = $matches[0][0];
+                $maxRange = $matches[0][1];
+
+                $gpXP = $skill->skillRanges->where('min', '>=', $minRange)->where('max', '<=', $maxRange)->first()->gp_xp;
+
                 $totalPoints += $points;
-                $goldPerGroup[$table] = ($skill->$table * $points) / 1000000;
-                $gold += ($skill->$table * $points) / 1000000;
+
+                $goldPerGroup[$table] = [
+                    'min' => $min,
+                    'max' => $max,
+                    'min_level' => $minRange,
+                    'max_level' => $maxRange,
+                    'gpXP' => $gpXP,
+                    'points' => $points,
+                    'gold' => ($gpXP * $points) / 1000000,
+                    'price' => ($gpXP * $points) / 1000000 * $goldPerUsd,
+                ];
+                // $goldPerGroup[$table] = ($gpXP * $points) / 1000000;
+                $gold += ($gpXP * $points) / 1000000;
                 $selectedTables[] = $table;
             }
         }
@@ -73,6 +91,7 @@ class CalculatorService
             'goldPerUsd' => $goldPerUsd,
             'price' => round($price, 2),
             'totalPoints' => $totalPoints,
+            'goldPerGroup' => $goldPerGroup,
         ];
     }
 }
