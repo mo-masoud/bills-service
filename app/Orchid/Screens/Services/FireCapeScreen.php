@@ -14,6 +14,8 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Orchid\Screen\Components\Cells\Boolean;
+use Orchid\Screen\Fields\CheckBox;
 
 class FireCapeScreen extends Screen
 {
@@ -65,6 +67,8 @@ class FireCapeScreen extends Screen
             Layout::table('options', [
                 TD::make('id'),
                 TD::make('name'),
+                TD::make('has_quantity', 'Has Quantity')
+                    ->usingComponent(Boolean::class),
 
                 TD::make('actions')
                     ->alignRight()
@@ -98,6 +102,10 @@ class FireCapeScreen extends Screen
                     Input::make('name')
                         ->title('Name')
                         ->placeholder('Enter the name of the type'),
+                        
+                    CheckBox::make('has_quantity')
+                        ->sendTrueOrFalse()
+                        ->title('Has Quantity'),
                 ]),
             ])->title('Create Type')
                 ->applyButton('Create'),
@@ -107,6 +115,10 @@ class FireCapeScreen extends Screen
                     Input::make('name')
                         ->title('Name')
                         ->placeholder('Enter the name of the type'),
+
+                    CheckBox::make('has_quantity')
+                        ->sendTrueOrFalse()
+                        ->title('Has Quantity')
                 ]),
             ])->async('asyncEdit')
                 ->applyButton('Update'),
@@ -117,6 +129,7 @@ class FireCapeScreen extends Screen
     {
         return [
             'name' => $option->name,
+            'has_quantity' => $option->has_quantity,
         ];
     }
 
@@ -125,10 +138,12 @@ class FireCapeScreen extends Screen
         // validate the request
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean',
         ]);
 
         $option->update([
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         Toast::success('Fire Cape type updated successfully.');
@@ -146,11 +161,13 @@ class FireCapeScreen extends Screen
         // validate the request
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean'
         ]);
 
         ServiceOption::create([
             'service' => 'fire-cape',
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         Toast::success('Fire Cape type created successfully.');

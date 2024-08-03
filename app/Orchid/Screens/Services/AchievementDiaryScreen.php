@@ -14,6 +14,8 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Orchid\Screen\Components\Cells\Boolean;
+use Orchid\Screen\Fields\CheckBox;
 
 class AchievementDiaryScreen extends Screen
 {
@@ -65,7 +67,9 @@ class AchievementDiaryScreen extends Screen
             Layout::table('options', [
                 TD::make('id'),
                 TD::make('name'),
-
+                TD::make('has_quantity', 'Has Quantity')
+                    ->usingComponent(Boolean::class),
+                    
                 TD::make('actions')
                     ->alignRight()
                     ->cantHide()
@@ -95,6 +99,9 @@ class AchievementDiaryScreen extends Screen
             Layout::modal('createModal', [
                 Layout::rows([
                     Input::make('name')->title('Name'),
+                    CheckBox::make('has_quantity')
+                        ->sendTrueOrFalse()
+                        ->title('Has Quantity')
                 ]),
             ])->title('Create')
                 ->applyButton('Create'),
@@ -103,6 +110,10 @@ class AchievementDiaryScreen extends Screen
                 Layout::rows([
                     Input::make('name')
                         ->title('Name'),
+
+                    CheckBox::make('has_quantity')
+                        ->sendTrueOrFalse()
+                        ->title('Has Quantity')
                 ]),
             ])->async('asyncEdit')
                 ->applyButton('Update'),
@@ -114,6 +125,7 @@ class AchievementDiaryScreen extends Screen
         $option = ServiceOption::findOrFail($service);
         return [
             'name' => $option->name,
+            'has_quantity' => $option->has_quantity,
         ];
     }
 
@@ -128,10 +140,12 @@ class AchievementDiaryScreen extends Screen
     {
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean',
         ]);
 
         $service->update([
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         Toast::success('Service updated successfully.');
@@ -141,11 +155,13 @@ class AchievementDiaryScreen extends Screen
     {
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean',
         ]);
 
         ServiceOption::create([
             'service' => 'achievement-diary',
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         Toast::success('Service created successfully.');

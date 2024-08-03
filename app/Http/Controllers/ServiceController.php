@@ -61,6 +61,7 @@ class ServiceController extends Controller
                     return [
                         'id' => $option->id,
                         'name' => $option->name,
+                        'has_quantity' => $option->has_quantity,
                         'children' => $option->children->map(function ($child) {
                             return [
                                 'id' => $child->id,
@@ -99,6 +100,7 @@ class ServiceController extends Controller
                 return [
                     'id' => $option->id,
                     'name' => $option->name,
+                    'has_quantity' => $option->has_quantity,
                     'children' => $option->children->map(function ($child) {
                         return [
                             'id' => $child->id,

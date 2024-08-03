@@ -13,6 +13,8 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Orchid\Screen\Components\Cells\Boolean;
+use Orchid\Screen\Fields\CheckBox;
 
 class FortisColosseumScreen extends Screen
 {
@@ -64,6 +66,8 @@ class FortisColosseumScreen extends Screen
             Layout::table('options', [
                 TD::make('id'),
                 TD::make('name'),
+                TD::make('has_quantity', 'Has Quantity')
+                    ->usingComponent(Boolean::class),
 
                 TD::make('actions')
                     ->alignRight()
@@ -97,6 +101,10 @@ class FortisColosseumScreen extends Screen
                     Input::make('name')
                         ->title('Name')
                         ->placeholder('Enter the name of the service'),
+                        
+                    CheckBox::make('has_quantity')
+                    ->sendTrueOrFalse()
+                    ->title('Has Quantity')
                 ]),
             ])->title('Create service')
                 ->applyButton('Create'),
@@ -106,6 +114,10 @@ class FortisColosseumScreen extends Screen
                     Input::make('name')
                         ->title('Name')
                         ->placeholder('Enter the name of the service'),
+                        
+                    CheckBox::make('has_quantity')
+                    ->sendTrueOrFalse()
+                    ->title('Has Quantity')
                 ]),
             ])->async('asyncEdit')
                 ->applyButton('Update'),
@@ -116,6 +128,7 @@ class FortisColosseumScreen extends Screen
     {
         return [
             'name' => $option->name,
+            'has_quantity' => $option->has_quantity
         ];
     }
 
@@ -124,10 +137,12 @@ class FortisColosseumScreen extends Screen
         // validate the request
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean'
         ]);
 
         $option->update([
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         Toast::success('Fortis Colosseum service updated successfully.');
@@ -145,11 +160,13 @@ class FortisColosseumScreen extends Screen
         // validate the request
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean'
         ]);
 
         ServiceOption::create([
             'service' => 'fortis-colosseum',
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         Toast::success('Fortis Colosseum service created successfully.');

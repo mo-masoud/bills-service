@@ -16,6 +16,11 @@ class ServiceOption extends Model
         'parent_id',
         'type',
         'service',
+        'has_quantity'
+    ];
+
+    protected $casts = [
+        'has_quantity' => 'boolean'
     ];
 
     public function parent()

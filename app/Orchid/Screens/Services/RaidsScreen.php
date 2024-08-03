@@ -14,6 +14,8 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use Orchid\Screen\Components\Cells\Boolean;
+use Orchid\Screen\Fields\CheckBox;
 
 class RaidsScreen extends Screen
 {
@@ -65,6 +67,8 @@ class RaidsScreen extends Screen
             Layout::table('options', [
                 TD::make('id'),
                 TD::make('name'),
+                TD::make('has_quantity', 'Has Quantity')
+                    ->usingComponent(Boolean::class),
 
                 TD::make('actions')
                     ->alignRight()
@@ -93,6 +97,10 @@ class RaidsScreen extends Screen
                 Layout::rows([
                     Input::make('name')->title('Name'),
 
+                    CheckBox::make('has_quantity')
+                        ->sendTrueOrFalse()
+                        ->title('Has Quantity'),
+
                     Matrix::make('createOptions')
                         ->columns(['option_name', 'option_price', 'missing_stats_price'])
                     ->fields([
@@ -108,6 +116,9 @@ class RaidsScreen extends Screen
                 Layout::rows([
                     Input::make('name')
                         ->title('Name'),
+                    CheckBox::make('has_quantity')
+                        ->sendTrueOrFalse()
+                        ->title('Has Quantity'),
 
                     Matrix::make('updateOptions')
                         ->columns(['option_name', 'option_price', 'missing_stats_price'])
@@ -127,6 +138,7 @@ class RaidsScreen extends Screen
         $option = ServiceOption::findOrFail($raids);
         return [
             'name' => $option->name,
+            'has_quantity' => $option->has_quantity,
             'updateOptions' => $option->children->map(function ($option) {
                 return [
                     'option_name' => $option->name,
@@ -148,6 +160,7 @@ class RaidsScreen extends Screen
     {
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean',
             'updateOptions' => 'required|array',
             'updateOptions.*.option_name' => 'required|string',
             'updateOptions.*.option_price' => 'required|numeric',
@@ -156,6 +169,7 @@ class RaidsScreen extends Screen
 
         $raids->update([
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         $raids->children()->where('type', 'radio')->delete();
@@ -187,6 +201,7 @@ class RaidsScreen extends Screen
     {
         $request->validate([
             'name' => 'required|string',
+            'has_quantity' => 'required|boolean',
             'createOptions' => 'required|array',
             'createOptions.*.option_name' => 'required|string',
             'createOptions.*.option_price' => 'required|numeric',
@@ -196,6 +211,7 @@ class RaidsScreen extends Screen
         $raids = ServiceOption::create([
             'service' => 'raids',
             'name' => $request->get('name'),
+            'has_quantity' => $request->get('has_quantity'),
         ]);
 
         foreach ($request->get('createOptions') as $option) {
