@@ -107,7 +107,9 @@ class ViewOrderScreen extends Screen
                                 return ServiceOption::find($option)->name;
                             })->implode(' - ');
                         }),
-                        Sight::make('Price')->render(fn () => $serviceItem->price),
+                        Sight::make('Quantity')->render(fn () => $serviceItem->quantity),
+                        Sight::make('Unit Price')->render(fn () => $serviceItem->price / $serviceItem->quantity),
+                        Sight::make('Total Price')->render(fn () => $serviceItem->price),
                     ]),
                 ];
             }))->title(__('Services'))

@@ -122,10 +122,13 @@ class PlaceOrderService
 
         $price += $checkboxesPrice;
 
+        $qty = $serviceItem['quantity'] ?? 1;
+
         return [
             'service_option_id' => $serviceItem['service_id'],
             'checkboxes' => $serviceItem['checkboxes'],
-            'price' => $price,
+            'quantity' => $serviceItem['quantity'],
+            'price' => $price * $qty,
         ];
     }
 }

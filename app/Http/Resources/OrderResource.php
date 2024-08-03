@@ -80,6 +80,8 @@ class OrderResource extends JsonResource
                         ];
                     }) : [],
                 ],
+                'quantity' => $item->quantity,
+                'unit_price' => $item->price / $item->quantity,
                 'price' => $item->price,
                 'type' => 'service'
             ];

@@ -17,6 +17,7 @@ class ServiceOrderItem extends Model
         'order_id',
         'checkboxes',
         'price',
+        'quantity'
     ];
 
     protected $casts = [
